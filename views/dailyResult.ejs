@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="/stylesheets/index.css"> -->
+    <link rel="stylesheet" href="/stylesheets/monthlychart.css">
+    <link rel="stylesheet" href="/stylesheets/navbar.css">
+</head>
+
+<body>
+    <% const date = new Date() %>
+    <% const todayString = date.toDateString() %>
+    <% const today = date.toLocaleDateString() %>
+    <%- include('./partials/navbar') %>
+        <div id="chart-form">
+            <h2 id="chart-text">Yahan Aap Date,Month Aur Year Select Karke Mumbai Starline ka daily ka Chart Dekh Sakte Hai.</h2>
+            <form action="/submitresult" method="POST">
+                <label for="date">Choose date,month and year</label>
+                <input type="date" id="date" name="date" value="<%= new Date().toISOString().slice(0, 10) %>">
+                
+                <button type="submit">Submit</button>
+              </form>
+              
+        </div>
+
+        <div id="mix-chart" class="chart">
+            <table class="chart-table">
+                <tr class="chart-head">
+                    <td colspan="7" class="month">
+                        <h1> Daily Satta-Bazar-Starline Result Chart for 
+                               
+                        </h1>
+                    </td>
+                </tr>
+                <tr class="date-name">
+                    <td class="date" title="Days in the current month">DATE</td>
+                    
+                </tr>
+
+                <!-- Get the number of days in the current month -->
+               
+                            <!-- Last day of the current month -->
+
+                            <!-- Loop through each day of the month -->
+                            <%# for (let day=1; day <=daysInMonth; day++) { %>
+                                <tr class="day-number">
+                                    <td class="day"
+                                        title="<%#= todayDate.toLocaleString('default', { month: 'long' }) %> <%#= day < 10 ? '0' + day : day %>, <%#= year %>">
+                                        <%#= day < 10 ? '0' + day : day %>
+                                    </td>
+
+                                    <%# monthlyResults.forEach(game=> {
+                                        // Find the result for the current day
+                                        let result = game.resultsByDay.find(r => {
+                                        const resultDate = new Date(r.date);
+                                        return resultDate.getDate() === day && resultDate.getMonth() === month &&
+                                        resultDate.getFullYear() === year;
+                                        });
+                                        %>
+                                        <td class="number">
+                                            <%#= result ? result.result : 'XX' %>
+                                        </td>
+                                        <%# }) %>
+                                </tr>
+                                <%# } %>
+            </table>
+        </div>
+
+
+        <%-include('./partials/footer') %>
+
+</body>
+
+</html>

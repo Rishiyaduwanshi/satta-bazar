@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="/stylesheets/global.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="/toastr/toastr.min.css">
+    <script src="/toastr/toastr.min.js"></script>
+
+    <style>
+        /* Body styling */
+        body {
+            font-family: var(--font-family);
+            background-color: var(--background-color-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* Login container */
+        .login-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        /* Form styling */
+        .login-container h1 {
+            text-align: center;
+            color: var(--border-color-dark-blue);
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: var(--font-weight-bold);
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color-gray-light);
+            border-radius: 5px;
+        }
+
+        /* Button styling */
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--border-color-dark-blue);
+            color: var(--color-white);
+            border: none;
+            border-radius: 5px;
+            font-size: var(--font-size-normal);
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: var(--bg-color-green-light);
+        }
+
+        /* Signup link */
+        p {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        p a {
+            color: var(--border-color-dark-blue);
+            text-decoration: none;
+        }
+
+        p a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>Login</h1>
+        <form action="/signin" method="POST" class="login-form">
+            <div class="form-group">
+                <label for="usernameOrEmail">Username or Email</label>
+                <input type="text" id="usernameOrEmail" name="usernameOrEmail" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn">Login</button>
+        </form>
+        <!-- <p>Don't have an account? <a href="/signup">Sign up here</a></p> -->
+    </div>
+
+    <script>
+        const loginForm = document.querySelector('.login-form');
+        const loginUsernameOrEmailInput = document.getElementById('usernameOrEmail');
+        const loginPasswordInput = document.getElementById('password'); // Fixed id reference
+    
+        const errorColor = "var(--bg-color-green-light)"; // Using CSS variable for errors
+    
+        // Regex for validating email format
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+        loginForm.addEventListener('submit', function (e) {
+            let valid = true;
+    
+            // Reset input styles
+            loginUsernameOrEmailInput.style.borderColor = '';
+            loginPasswordInput.style.borderColor = '';
+    
+            const usernameOrEmail = loginUsernameOrEmailInput.value.trim();
+            const password = loginPasswordInput.value.trim();
+    
+            // Check if username or email is filled
+            if (usernameOrEmail === '') {
+                alert('Username or Email is required.');
+                loginUsernameOrEmailInput.style.borderColor = errorColor;
+                valid = false;
+            } else if (usernameOrEmail.includes('@') && emailPattern.test(usernameOrEmail) === false) {
+                alert('Invalid email format.');
+                loginUsernameOrEmailInput.style.borderColor = errorColor;
+                valid = false;
+            }
+    
+            // Check if password is filled
+            if (password === '') {
+                alert('Password is required.');
+                loginPasswordInput.style.borderColor = errorColor;
+                valid = false;
+            }
+    
+            // If any validation fails, prevent form submission
+            if (!valid) {
+                e.preventDefault();
+            }
+        });
+
+              '<% if (error.length>0) { %>'
+                toastr.error("<%= error %>");
+            '<% } %>'
+    
+            '<% if (success.length>0) { %>'
+                toastr.success("<%= success %>");
+            '<% } %>'
+    </script>
+    
+</body>
+</html>

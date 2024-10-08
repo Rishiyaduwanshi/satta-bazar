@@ -1,0 +1,39 @@
+:root {
+    /* Colors */
+    --background-color-light: #F1F1F1;
+    --border-color-dark-blue: #003399;
+    --bg-color-blue: rgb(23, 108, 238);
+    --color-white: white;
+    --border-color-green: #339966;
+    --bg-color-green-light: #33CC99;
+    --border-color-red: #DA040C;
+    --bg-color-red-light: #F7435E;
+    --border-color-orange: rgb(231, 170, 38);
+    --bg-color-yellow: #FBC503;
+    --color-black: black;
+    --border-color-gray-light: #CCCCCC;
+    --border-color-pink: rgb(239, 105, 131);
+    --bg-color-pink-light: rgb(253, 221, 226);
+    --border-color-green-bright: rgb(2, 199, 124);
+    --bg-color-green-bright: rgb(189, 239, 193);
+    --border-color-yellow: rgb(215, 212, 70);
+    --bg-color-yellow-light: rgb(244, 243, 169);
+    --border-color-blue-light: rgb(26, 212, 236);
+    --bg-color-blue-light: rgb(193, 242, 249);
+    --color-red: red;
+    --bg-color-light-gray: #F9F9F9;
+    --bg-color-yellow-highlight: #fbc503;
+    --border-color-yellow-highlight: #bf8302;
+    --bg-color-dark-gray: #424242;
+    --bg-color-dark-yellow: #396;
+    --bg-color-board-head: #212121;
+    --color-blue-link: #2962FF;
+
+    /* Font */
+    --font-family: Geneva, Tahoma, Verdana, Helvetica, Arial, sans-serif;
+    --font-size-default: 100%;
+    --font-size-normal: 1em;
+    --font-size-large: 1.2em;
+    --font-size-small: 0.8em;
+    --font-weight-bold: bold;
+}

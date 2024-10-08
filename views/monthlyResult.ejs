@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="/stylesheets/index.css"> -->
+    <link rel="stylesheet" href="/stylesheets/monthlychart.css">
+    <link rel="stylesheet" href="/stylesheets/navbar.css">
+</head>
+
+<body>
+
+    <%- include('./partials/navbar') %>
+
+        <div id="chart-form">
+            <h2 id="chart-text">Yahan Aap Month Aur Year Select Karke Gali, Desawar, Ghaziabad Aur Faridabad Ka
+                Combined Chart Dekh Sakte Hai.</h2>
+            <form action="/monthlyResult" method="get">
+                <select id="month" name="month">
+                    <option value="01">January</option>
+                    <option value="02">February</option>
+                    <option value="03">March</option>
+                    <option value="04">April</option>
+                    <option value="05">May</option>
+                    <option value="06">June</option>
+                    <option value="07">July</option>
+                    <option value="08">August</option>
+                    <option value="09">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                </select>
+                <select id="year" name="year">
+                    <option value="2024">2024</option>
+                    <option value="2023">2023</option>
+                    <option value="2022">2022</option>
+                    <option value="2021">2021</option>
+                    <option value="2020">2020</option>
+                    <option value="2019">2019</option>
+                    <option value="2018">2018</option>
+                    <option value="2017">2017</option>
+                    <option value="2016">2016</option>
+                    <option value="2015">2015</option>
+                </select>
+                <input id="direct-chart" type="submit" value="Go">
+            </form>
+        </div>
+
+        <div id="mix-chart" class="chart">
+            <table class="chart-table">
+                <tr class="chart-head">
+                    <td colspan="7" class="month">
+                        <h1> Monthly Satta-Bazar-Starline Result Chart for <%= todayDate.toLocaleString('default', {
+                                month: 'long' }) %>
+                                <%= todayDate.getFullYear() %>
+                        </h1>
+                    </td>
+                </tr>
+                <tr class="date-name">
+                    <td class="date" title="Days in the current month">DATE</td>
+                    <% monthlyResults.forEach(game=> { %>
+                        <th class="name">
+                            <%= game._id %>
+                        </th> <!-- Game name -->
+                        <% }) %>
+                </tr>
+
+                <!-- Get the number of days in the current month -->
+                <% const month=todayDate.getMonth(); %>
+                    <% const year=todayDate.getFullYear(); %>
+                        <% const daysInMonth=new Date(year, month + 1, 0).getDate(); %>
+                            <!-- Last day of the current month -->
+
+                            <!-- Loop through each day of the month -->
+                            <% for (let day=1; day <=daysInMonth; day++) { %>
+                                <tr class="day-number">
+                                    <td class="day"
+                                        title="<%= todayDate.toLocaleString('default', { month: 'long' }) %> <%= day < 10 ? '0' + day : day %>, <%= year %>">
+                                        <%= day < 10 ? '0' + day : day %>
+                                    </td>
+
+                                    <% monthlyResults.forEach(game=> {
+                                        // Find the result for the current day
+                                        let result = game.resultsByDay.find(r => {
+                                        const resultDate = new Date(r.date);
+                                        return resultDate.getDate() === day && resultDate.getMonth() === month &&
+                                        resultDate.getFullYear() === year;
+                                        });
+                                        %>
+                                        <td class="number">
+                                            <%= result ? result.result : 'XX' %>
+                                        </td>
+                                        <% }) %>
+                                </tr>
+                                <% } %>
+            </table>
+        </div>
+
+
+        <%-include('./partials/footer') %>
+
+</body>
+
+</html>

@@ -1,0 +1,24 @@
+<% if (otherGames && otherGames.length) { %>
+    <% otherGames.forEach((game) => { %>
+      <tr class="game-result">
+        <td class="game-details">
+          <h3 class="game-name"><%= game.game %></h3> <!-- Render game name -->
+          <h3 class="game-time">at <%= game.date ? game.date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "N/A" %></h3> <!-- Render game time -->
+          <h3 class="game-link">
+            <a href="https://satta-bazar-starline.com/shiv-shakti/satta-result-chart/ss/">Record Chart</a>
+          </h3>
+        </td>
+        <td class="yesterday-number">
+          <h3><%= game.yesterdayNumber || "N/A" %></h3> <!-- Placeholder for yesterday's number -->
+        </td>
+        <td class="today-number">
+          <h3><%= game.result || "N/A" %></h3> <!-- Render today's result -->
+        </td>
+      </tr>
+    <% }) %>
+  <% } else { %>
+    <tr>
+      <td colspan="3">No games available</td>
+    </tr>
+  <% } %>
+  

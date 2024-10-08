@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Result</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="/toastr/toastr.min.css">
+    <script src="/toastr/toastr.min.js"></script>
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="/stylesheets/submitResult.css">
+</head>
+
+<body>
+    <!-- Include Navbar -->
+    <%- include('./partials/navbar') %>
+    <div class="container mt-5 result-container">
+        <h2 class="text-center mb-4 mt-1">Submit Result</h2>
+
+        <!-- Display Flash Message -->
+
+        <form id="resultForm" class="mx-auto" style="max-width: 600px;" action="/submitresult" method="POST">
+            <!-- Team Input -->
+            <div class="mb-3">
+                <label for="game" class="form-label">GameList</label>
+                <select id="game" name="game" class="form-select" required>
+                    <option value="">Select Game</option>
+                    <% gameList.forEach(function(game) { %>
+                        <option value="<%= game %>"><%= game %></option>
+                    <% }); %>
+                </select>
+            </div>
+        
+            <!-- Date Input -->
+            <div class="mb-3">
+                <label for="date" class="form-label">Date</label>
+                <input type="date" id="date" name="date" class="form-control" required>
+            </div>
+        
+            <!-- Time Input -->
+            <div class="mb-3" id="timeInput">
+                <label for="time" class="form-label">Time</label>
+                <input type="time" id="time" name="time" class="form-control" required maxlength="2">
+            </div>
+        
+            <!-- Result Input -->
+            <div class="mb-3">
+                <label for="result" class="form-label">Result</label>
+                <input type="number" id="result" name="result" class="form-control" placeholder="Enter result" required min="0" max="99">
+            </div>
+        
+            <!-- Submit Button -->
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary" id="formSubmit">Submit</button>
+            </div>
+        </form>
+    </div>
+
+
+    <%-include('./partials/footer') %>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    '<% if (signupSuccess.length>0) { %>'
+        toastr.success("<%= signupSuccess %>");
+    '<% } %>'
+
+    '<% if(success.length>0){ %>'
+    toastr.success('<%=success  %>')
+    '<% } %>'
+
+    '<% if(error.length>0){ %>'
+    toastr.error('<%=error  %>')
+    '<% } %>'
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+    <link rel="stylesheet" href="/stylesheets/global.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+
+    <style>
+        /* Body styling */
+        body {
+            font-family: var(--font-family);
+            background-color: var(--background-color-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* Signup container */
+        .signup-container {
+            background-color: var(--color-white);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        /* Form styling */
+        .signup-container h1 {
+            text-align: center;
+            color: var(--border-color-dark-blue);
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: var(--font-weight-bold);
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color-gray-light);
+            border-radius: 5px;
+        }
+
+        /* Button styling */
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--border-color-dark-blue);
+            color: var(--color-white);
+            border: none;
+            border-radius: 5px;
+            font-size: var(--font-size-normal);
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: var(--bg-color-green-light);
+        }
+
+        /* Login link */
+        p {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        p a {
+            color: var(--border-color-dark-blue);
+            text-decoration: none;
+        }
+
+        p a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+
+
+
+<body>
+    <div class="signup-container">
+        <h1>Sign Up</h1>
+        <form action="/signup" method="POST" class="signup-form">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required autocomplete="name">
+            </div>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required autocomplete="username">
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required autocomplete="new-password"
+                    placeholder="atleast 6 digit ">
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" required autocomplete="new-password"
+                    placeholder="atleast 6 digit">
+            </div>
+            <button type="submit" class="btn">Sign Up</button>
+        </form>
+        <p>Already have an account? <a href="/signin">Sign here</a></p>
+    </div>
+
+    <script>
+        const signupForm = document.querySelector('.signup-form');
+        const signupUsernameInput = document.getElementById('username');
+        const signupEmailInput = document.getElementById('email');
+        const signupPasswordInput = document.getElementById('password');
+        const signupConfirmPasswordInput = document.getElementById('confirmPassword');
+
+        const errorColor = "var(--color-red)"; // Use your specified color for errors
+
+        signupForm.addEventListener('submit', function (e) {
+            let valid = true;
+
+            // Reset input styles
+            signupUsernameInput.style.borderColor = '';
+            signupEmailInput.style.borderColor = '';
+            signupPasswordInput.style.borderColor = '';
+
+            const username = signupUsernameInput.value.trim();
+            const email = signupEmailInput.value.trim();
+            const password = signupPasswordInput.value.trim();
+            const confirmPassword = signupConfirmPasswordInput.value.trim();
+
+            // Regex for validating email format
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            // Check if username is filled
+            if (username === '') {
+                alert('Username is required.');
+                signupUsernameInput.style.borderColor = errorColor;
+                valid = false;
+            }
+
+            // Check if email is filled and valid
+            if (email === '') {
+                alert('Email is required.');
+                signupEmailInput.style.borderColor = errorColor;
+                valid = false;
+            } else if (!emailPattern.test(email)) {
+                alert('Invalid email format.');
+                signupEmailInput.style.borderColor = errorColor;
+                valid = false;
+            }
+
+            // Check if password is filled
+            if (password === '') {
+                alert('Password is required.');
+                signupPasswordInput.style.borderColor = errorColor;
+                valid = false;
+            }
+
+
+
+            if (confirmPassword != password) {
+                alert('password did not match.')
+                signupConfirmPasswordInput.style.borderColor = errorColor;
+                valid = false;
+            
+            }
+
+            if (password.length <= 5) {
+                alert('Password length should be atleast 6 digit')
+                signupConfirmPasswordInput.style.borderColor = errorColor;
+                signupPasswordInput.style.borderColor = errorColor;
+                valid = false;
+            }
+
+            // If any validation fails, prevent form submission
+            if (!valid) {
+                e.preventDefault();
+            }
+        });
+    
+
+            '<% if (adminCountError.length>0) { %>'
+                toastr.error("<%= adminCountError %>");
+            '<% } %>'
+        
+    </script>
+
+
+
+    <!-- Signup form code -->
+
+</body>
+
+
+
+
+
+</html>

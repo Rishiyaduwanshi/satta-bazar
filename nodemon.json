@@ -1,0 +1,5 @@
+{
+    "ext": "js,json,ejs,html,css,mjs,cjs,env",
+    "ignore": ["demo/**","nodemon.json"]
+  }
+  

@@ -1,0 +1,19 @@
+<link rel="stylesheet" href="/stylesheets/footer.css">
+
+
+<footer class="footer">
+    <div class="footer-container">
+        <p>&copy; <span id="currentDate"></span> Satta Bazar Starline. Developed by Abhinav Prakash</p>
+        <ul class="footer-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/monthlyresult">Monthly Result</a></li>
+        </ul>
+    </div>
+</footer>
+
+
+<script>
+    const footerdate = new Date()
+    const footertoday = document.getElementById('currentDate')
+    footertoday.innerText = footerdate.getFullYear();
+</script>

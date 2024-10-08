@@ -1,0 +1,30 @@
+{
+  "name": "library-management-system",
+  "version": "1.0.0",
+  "description": "This is a library management system for school, colleges and universities with frontend along with backend using node,express,ejs,html,css, jquery,bootstrap and other node modules.",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "Abhinav",
+    "Prakash",
+    "Abhinav",
+    "lms"
+  ],
+  "author": "Abhinav Prakash",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "connect-flash": "^0.1.1",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.9",
+    "env": "^0.0.2",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.3.0",
+    "toastr": "^2.1.4"
+  }
+}
