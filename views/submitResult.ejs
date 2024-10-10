@@ -64,6 +64,7 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="/scripts/date.js"></script> -->
     <script>
         '<% if (signupSuccess.length > 0) { %>'
             toastr.success("<%= signupSuccess %>");
@@ -96,6 +97,34 @@
                 toastr.error("Time should be between 10:00 AM to 10:00 PM");
             }
         });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Retrieve previous data from session storage if it exists
+            if (sessionStorage.getItem("oldResultData")) {
+                const previousData = JSON.parse(sessionStorage.getItem("oldResultData"));
+                
+                document.getElementById("game").value = previousData.game || "";
+                document.getElementById("date").value = previousData.date || "";
+                document.getElementById("time").value = previousData.time || "";
+                document.getElementById("result").value = previousData.result || "";
+            }
+        
+            const submitBtn = document.getElementById("formSubmit");
+        
+            submitBtn.addEventListener("click", function(event) {
+                // Gather data from the form
+                const formData = {
+                    game: document.getElementById("game").value,
+                    date: document.getElementById("date").value,
+                    time: document.getElementById("time").value,
+                    result: document.getElementById("result").value
+                };
+                // Store the form data in session storage
+                sessionStorage.setItem("oldResultData", JSON.stringify(formData));
+            });
+        });
+        
     </script>
     
 </body>
