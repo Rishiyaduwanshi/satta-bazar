@@ -6,7 +6,7 @@ const checkAdminCount = async (req, res, next) => {
     const adminCount = await adminSchema.countDocuments();
 
     // Check if the admin limit is reached
-    if (adminCount >= 1) {
+    if (adminCount >= 3) {
       req.flash("adminCountError", "You are not allowed to signup");
       return res.redirect("/signup");
     }

@@ -51,13 +51,7 @@ app.get("/", async (req, res) => {
     const timeInMilli = new Date(resultWithMumbai.date).getTime();
 
     // Set today's date and start of the month at the top
-    const todayDate = new Date(); // Current date
-    todayDate.setHours(23, 59, 59, 999); // Set to the end of the current day
-
-    const startOfMonth = new Date(todayDate); // Start of the month
-    startOfMonth.setDate(1); // 1st day of the current month
-
-    // Fetch today's results (sorted by time)
+    const todayDate = new Date(); 
     const startDate = new Date(
       todayDate.getFullYear(),
       todayDate.getMonth(),
@@ -95,36 +89,6 @@ app.get("/", async (req, res) => {
     ]);
 
     /**********************Other games END **************************** */
-
-    // ******************************One Month Result START************************
-
-    // Aggregating results for the current month (1st to today)
-
-    const monthlyGameResults = await Result.aggregate([
-      {
-        $match: {
-          game: { $ne: "Mumbai Starline" }, // Exclude Mumbai Starline
-          date: { $gte: startOfMonth, $lte: todayDate }, // Only consider data from 1st to today
-        },
-      },
-      {
-        $sort: { date: -1 }, // Sort by latest date first
-      },
-      {
-        $group: {
-          _id: "$game", // Group by game
-          resultsByDay: {
-            $push: {
-              date: "$date",
-              result: "$result",
-            },
-          },
-        },
-      },
-    ]);
-
-    // console.log('Monthly Results:', JSON.stringify(monthlyGameResults, null, 2));
-
     // Format today's results for the table
     const formattedResults = todayResults.map((result) => ({
       time: result.date.toLocaleTimeString([], {
@@ -141,7 +105,6 @@ app.get("/", async (req, res) => {
       timeInMilli,
       todayResults: formattedResults, // Pass today's sorted results
       otherGames: latestResults,
-      monthlyResults: monthlyGameResults,
       todayDate,
       oneDayBefore,
     });
@@ -155,8 +118,7 @@ app.get("/", async (req, res) => {
 
 // }
 
-app.get("/submitresult",(req, res) => {
-  
+app.get("/submitresult", (req, res) => {
   res.render("submitresult", {
     gameList,
     success: req.flash("success"),
@@ -165,25 +127,29 @@ app.get("/submitresult",(req, res) => {
   });
 });
 
-app.post("/submitresult", require('./middlewares/checkResult'), async (req, res) => {
-  const { game, date, result, time } = req.body; // Assume these values are coming from the form
-  const dateObject = new Date(date + "T" + time);
+app.post(
+  "/submitresult",
+  require("./middlewares/checkResult"),
+  async (req, res) => {
+    const { game, date, result, time } = req.body; // Assume these values are coming from the form
+    const dateObject = new Date(date + "T" + time);
 
-  try {
-    const newResult = new Result({
-      game,
-      date: dateObject,
-      result,
-    });
-    await newResult.save();
-    req.flash("success", "Result submitted successfully!");
-    res.redirect("/submitresult");
-  } catch (err) {
-    console.error("Error submitting result:", err);
-    req.flash("error", "Could not save result");
-    res.redirect("/submitresult");
+    try {
+      const newResult = new Result({
+        game,
+        date: dateObject,
+        result,
+      });
+      await newResult.save();
+      req.flash("success", "Result submitted successfully!");
+      res.redirect("/submitresult");
+    } catch (err) {
+      console.error("Error submitting result:", err);
+      req.flash("error", "Could not save result");
+      res.redirect("/submitresult");
+    }
   }
-});
+);
 
 // app.get("/api/results", async (req, res) => {
 //   try {
@@ -274,18 +240,9 @@ app.get("/monthlyresult", async (req, res) => {
   }
 });
 
-// app.post("/monthlyresult", async (req, res) => {
-//   try {
-
-//   } catch (err) {
-//     console.error("Error saving result:", err);
-//     res.status(500).send("Internal Server Error");
-//   }
-// });
-
 app.get("/signup", (req, res) => {
   const adminCountError = req.flash("adminCountError");
-  res.render("adminsignup", { adminCountError});
+  res.render("adminsignup", { adminCountError });
 });
 app.post("/signup", require("./middlewares/adminCount"), async (req, res) => {
   try {
@@ -313,20 +270,50 @@ app.post("/signup", require("./middlewares/adminCount"), async (req, res) => {
 });
 
 app.get("/signin", (req, res) => {
-  const error = req.flash('error');
-  const success = req.flash('success');
+  const error = req.flash("error");
+  const success = req.flash("success");
   res.render("adminsignin", { error, success });
 });
 
-app.post("/signin", require('./auth/adminAuth').signin, (req, res) => {
-
+app.post("/signin", require("./auth/adminAuth").signin, (req, res) => {
   // Middleware handles redirection, no need for extra logic here.
 });
 
-app.get('/dailyResult',(req,res)=>{
-  res.render('dailyresult')
-})
+// const date = '2024-11-31'
+app.get("/dailyResult", async (req, res) => {
+  const { date } = req.query;
+  console.log(date);
+  try {
+    if (typeof date == "undefined") {
+      res.redirect(
+        `/dailyresult/?date=${new Date().toISOString().substring(0, 10)}`
+      );
+    }
+    if (typeof date === "string") {
+      const d = new Date(date);
+      const startOfDayUTC = new Date(d.setHours(0, 0, 0, 0)); // Start at 00:00:00
+      const endOfDayUTC = new Date(d.setHours(23, 59, 59, 999)); // End at 23:59:59
 
+      const fetchResult = await Result.find({
+        game: "Mumbai Starline",
+        date: { $gte: startOfDayUTC, $lte: endOfDayUTC },
+      }).sort({ date: 1 });
+
+      const todayDate = d.toDateString();
+
+      res.render("dailyresult", {
+        data: gameList,
+        fetchResult,
+        todayDate,
+      });
+    }
+  } catch (err) {
+    console.error("Error fetching result:", err);
+    res
+      .status(501)
+      .send(`Internal server error ${require("./utils/errorCodes").c46}`);
+  }
+});
 
 app.get("*", (req, res) => {
   res.status(404).render("404"); // Render the 404 page with a 404 status code

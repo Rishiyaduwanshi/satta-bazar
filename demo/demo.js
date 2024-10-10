@@ -35,12 +35,26 @@
 
 
 
-const date = new Date();
-console.log(date.toLocaleDateString())
-console.log(date.toDateString())
-console.log(date.toLocaleString())
-console.log(date.toISOString())
-console.log(date.toLocaleTimeString())
+// const date = new Date();
+// console.log(date.toLocaleDateString())
+// console.log(date.toDateString())
+// console.log(date.toLocaleString())
+// console.log(date.toISOString())
+// console.log(date.toLocaleTimeString())
+// console.log(new Date().toLocaleDateString())
+
+
+
+// const d = new Date();
+// const year = d.getFullYear();
+// const month = (d.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-based
+// const day = d.getDate().toString().padStart(2, '0');
+// const formattedDate = `${year}-${month}-${day}`; // Example output: "2024-10-08"
+// console.log(formattedDate);
+// console.log(d.toISOString())
+
+// console.log(month)
+
 
 // const date = new Date();
 
@@ -76,3 +90,9 @@ console.log(date.toLocaleTimeString())
 // console.log(date)
 // console.log(date.toLocaleTimeString())
 // console.log(date.toUTCString())
+
+
+
+const today = new Date()
+
+console.log(today.toLocaleString())

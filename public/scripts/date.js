@@ -5,7 +5,7 @@ const todayDate = new Date();
 today.innerText = todayDate.toDateString();
 
 const todayClass = document.querySelector(".today");
-todayClass.innerText = todayDate.toLocaleDateString();
+todayClass.innerText = todayDate.toDateString();
 
 
 let old = document.getElementById('half-add-time');
@@ -20,4 +20,3 @@ const [hours, minutes] = time.split(":"); // Split into hours and minute
 
 const formattedTime = `${hours}:${minutes} ${modifier}`;
 old.innerText = formattedTime;
-console.log('hi');

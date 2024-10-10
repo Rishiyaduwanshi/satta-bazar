@@ -9,7 +9,6 @@
     const date = new Date(justInMilli)
     const newDate = new Date(addedHalf); 
     
-
     
     const updatedTime = newDate.toLocaleTimeString()
     console.log(updatedTime)

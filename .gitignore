@@ -1,7 +1,7 @@
-# Node.js
+# Node.js dependencies
 node_modules/
-npm-debug.log
-yarn-error.log
+npm-debug.log*
+yarn-error.log*
 pnpm-lock.yaml
 .env
 
@@ -10,20 +10,19 @@ logs/
 *.log
 *.log.*
 
-# Dependency directories
+# Dependency directories (client-side and server-side)
 jspm_packages/
 bower_components/
 
-# Production
+# Production builds
 build/
 dist/
 
-# Misc
+# Miscellaneous files
 .DS_Store
-.env
 Thumbs.db
 
-# IDEs and editors
+# IDEs and editors configurations
 .vscode/
 .idea/
 *.suo
@@ -36,7 +35,6 @@ Thumbs.db
 .DS_Store
 Thumbs.db
 
-
-#My demo files 
+# My demo files (custom section)
 demo/
 server.error.txt
