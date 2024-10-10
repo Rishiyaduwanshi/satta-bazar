@@ -20,3 +20,11 @@ const [hours, minutes] = time.split(":"); // Split into hours and minute
 
 const formattedTime = `${hours}:${minutes} ${modifier}`;
 old.innerText = formattedTime;
+
+
+// Fixed time showing XX even after 10:00 START
+const todayNumberDaily = document.getElementById('today-number-daily')
+if(addedTimeInLocale=="10:30:00 PM"){
+    todayNumberDaily.innerText="END";
+}
+// Fixed time showing XX even after 10:00 END
