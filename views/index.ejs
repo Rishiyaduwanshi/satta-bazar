@@ -111,6 +111,7 @@
                         <th class="today-date">
                             <h2 id="half-add-time">
                                 <%= timeInMilli %>
+                                <% console.log(timeInMilli); %>
                             </h2>
                         </th>
                     </tr>
@@ -130,7 +131,7 @@
                                 <%=data.result %>
                             </h3>
                         </td>
-                        <td class="today-number">
+                        <td class="today-number" id="rishi-today-number-daily">
                             <h3>XX</h3>
                         </td>
                     </tr>
@@ -262,7 +263,6 @@
             </div>
             <!-- *********************Mumbai starline result  END********************** -->    
              
-            
             <!-- ***************************Monthly Chart START*********************************** -->
             
             <div id="mix-chart" class="chart">
