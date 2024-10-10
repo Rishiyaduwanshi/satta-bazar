@@ -11,67 +11,84 @@
 </head>
 
 <body>
-    <% const date = new Date() %>
-    <% const todayString = date.toDateString() %>
-    <% const today = date.toLocaleDateString() %>
-    <%- include('./partials/navbar') %>
+<% const currentMonth = todayDate.toLocaleString('default', { month: 'long' });  %>
+<% const d = new Date() %>
+<% const year = d.getFullYear(); %>
+<% const month = (d.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-based %>
+<% const day = d.getDate().toString().padStart(2, '0'); %>
+<% const formattedDate = `${year}-${month}-${day}`; // Example output: "2024-10-08" %>
+<% const currentDate = new Date() %>
+<%# const thisMonth = todayDate.getMonth(); %>
+<%# const thisyear = todayDate.getFullYear(); %>
+<%# const thisday = todayDate.getDate(); %>
+<% const daysInMonth = new Date(year, month + 1, 0).getDate(); %> <!-- Last day of the current month -->
+<% const date = new Date() %>
+<% const todayString = date.toDateString() %>
+<% const today = date.toLocaleDateString() %>
+<%- include('./partials/navbar') %>
         <div id="chart-form">
             <h2 id="chart-text">Yahan Aap Date,Month Aur Year Select Karke Mumbai Starline ka daily ka Chart Dekh Sakte Hai.</h2>
-            <form action="/submitresult" method="POST">
+            <form action="/dailyresult" method="GET">
                 <label for="date">Choose date,month and year</label>
-                <input type="date" id="date" name="date" value="<%= new Date().toISOString().slice(0, 10) %>">
-                
-                <button type="submit">Submit</button>
-              </form>
-              
+                <input type="date" id="date" name="date" value="<%=formattedDate %>">
+                <button type="submit" id="submitbtn">Submit</button>
+            </form>
         </div>
-
-        <div id="mix-chart" class="chart">
+        <div id="starline-result" class="chart">
             <table class="chart-table">
+                <!-- Header Section -->
                 <tr class="chart-head">
-                    <td colspan="7" class="month">
-                        <h1> Daily Satta-Bazar-Starline Result Chart for 
-                               
-                        </h1>
+                    <td class="month" colspan="3">
+                        <h1> Monthly Satta-Bazar-Starline Result Chart of <%=todayDate %> for Mumbai Starline</h1>
                     </td>
                 </tr>
-                <tr class="date-name">
-                    <td class="date" title="Days in the current month">DATE</td>
-                    
+                <!-- Table Header -->
+                <tr Class="date-name">
+                    <td class="date" title="Days in October 2024 ">Time</td>
+                    <th class="name">
+                        <%= data[0] %>
+                    </th> <!-- gameName passed from server -->
                 </tr>
-
-                <!-- Get the number of days in the current month -->
-               
-                            <!-- Last day of the current month -->
-
-                            <!-- Loop through each day of the month -->
-                            <%# for (let day=1; day <=daysInMonth; day++) { %>
-                                <tr class="day-number">
-                                    <td class="day"
-                                        title="<%#= todayDate.toLocaleString('default', { month: 'long' }) %> <%#= day < 10 ? '0' + day : day %>, <%#= year %>">
-                                        <%#= day < 10 ? '0' + day : day %>
-                                    </td>
-
-                                    <%# monthlyResults.forEach(game=> {
-                                        // Find the result for the current day
-                                        let result = game.resultsByDay.find(r => {
-                                        const resultDate = new Date(r.date);
-                                        return resultDate.getDate() === day && resultDate.getMonth() === month &&
-                                        resultDate.getFullYear() === year;
-                                        });
-                                        %>
-                                        <td class="number">
-                                            <%#= result ? result.result : 'XX' %>
-                                        </td>
-                                        <%# }) %>
-                                </tr>
-                                <%# } %>
+          
+                <!-- Dynamic Rows for each result -->
+                <% fetchResult.forEach(function(results) { %>
+                    <tr Class="day-number">
+                        <td class="day">
+                            <%= results.date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %>
+                        </td> <!-- Display time from each result -->
+                        <td class="number">
+                            <%= results.result.toString().padStart(2,'0') %>
+                        </td> <!-- Display number from each result -->
+                    </tr>
+                    <% }); %>
+          
+                        <!-- Some space between rows -->
+                        <tr class="space">
+                            <td></td>
+                        </tr>
+          
+                        <!-- Options for previous/next months -->
+                        <tr class="option">
+                            <td class="e-link" title="September-2024 Satta Result Chart With Record">
+                                <a href="#mix-chart">
+                                    <h1 class="aero">Sep 2024</h1>
+                                </a>
+                            </td>
+          
+                            <td class="e-link" title="November-2024 Satta Result Chart With Record">
+                                <a href="chart.php?ResultFor=November-2024&amp;month=11&amp;year=2024#mix-chart">
+                                    <h1 class="aero">Nov 2024</h1>
+                                </a>
+                            </td>
+                        </tr>
             </table>
-        </div>
+          </div>
+          
 
 
         <%-include('./partials/footer') %>
-
+<script>
+</script>
 </body>
 
 </html>
