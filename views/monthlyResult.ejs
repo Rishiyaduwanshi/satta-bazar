@@ -89,7 +89,7 @@
                                         });
                                         %>
                                         <td class="number">
-                                            <%= result ? result.result : 'XX' %>
+                                            <%= result ? result.result.toString().padStart(2,"0") : 'XX' %>
                                         </td>
                                         <% }) %>
                                 </tr>

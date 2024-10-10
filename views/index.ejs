@@ -38,17 +38,36 @@
     <link href="https://fonts.googleapis.com/css?family=Hind:400,600&display=swap" rel="stylesheet">
 </head>
 
-<% const currentDate = new Date() %>
 <% const currentMonth = todayDate.toLocaleString('default', { month: 'long' });  %>
-<% const year = currentDate.getFullYear(); %> 
-<% const month = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-based %>
-<% const monthIndex = (currentDate.getMonth() + 1) // Months are 0-based %>
-<% console.log(month); %>
-<% console.log(monthIndex); %>
-<% const day = currentDate.getDate().toString().padStart(2, '0'); %>
+<% const year = todayDate.getFullYear(); %> 
+<% const month = (todayDate.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-based %>
+<% const day = todayDate.getDate().toString().padStart(2, '0'); %>
+<% const monthZeroIndex=todayDate.getMonth(); %>
+<% const daysInMonth=new Date(year, month + 1, 0).getDate(); %>
 <% const formattedDate = `${year}-${month}-${day}`; // Example output: "2024-10-08" %>
 
-<% const daysInMonth = new Date(year, month + 1, 0).getDate(); %> <!-- Last day of the current month -->
+<% 
+  // One day before
+  const oneDayBefore = new Date(todayDate); // Clone the current date
+  oneDayBefore.setDate(todayDate.getDate() - 1); // Set to one day before
+  const yearOneDayBefore = oneDayBefore.getFullYear();
+  const monthOneDayBefore = (oneDayBefore.getMonth() + 1).toString().padStart(2, '0');
+  const monthOneDayBeforeString = oneDayBefore.getMonth()
+  const dayOneDayBefore = oneDayBefore.getDate().toString().padStart(2, '0');
+  const formattedDateOneDayBefore = `${yearOneDayBefore}-${monthOneDayBefore}-${dayOneDayBefore}`;
+%>
+
+<% 
+  // Two days before
+  const twoDaysBefore = new Date(todayDate); // Clone the current date
+  twoDaysBefore.setDate(todayDate.getDate() - 2); // Set to two days before
+  const yearTwoDaysBefore = twoDaysBefore.getFullYear();
+  const monthTwoDaysBefore = (twoDaysBefore.getMonth() + 1).toString().padStart(2, '0');
+  const monthTwoDaysBeforeString = twoDaysBefore.getMonth()
+  const dayTwoDaysBefore = twoDaysBefore.getDate().toString().padStart(2, '0');
+  const formattedDateTwoDaysBefore = `${yearTwoDaysBefore}-${monthTwoDaysBefore}-${dayTwoDaysBefore}`;
+%>
+
 
 <body>
     <div id="header"> <!-- Google Tag Manager (noscript) -->
@@ -183,7 +202,7 @@
 
                                     <tr class="board-head" id="old">
                                         <th colspan="3">
-                                            <h2><a href="#mix-chart">Click here for more games results.</a></h2>
+                                            <h2><a href="/monthlyresult?month=<%=month  %>&year=<%=year  %>">Click here for game monthly results.</a></h2>
                                         </th>
                                     </tr>
                 </table>
@@ -228,21 +247,74 @@
                             <!-- Options for previous/next months -->
                             <tr class="option">
                                 <td class="e-link">
-                                    <a href='/dailyresult?date=<%=formattedDate%>' >
-                                        <h1 class="aero"></h1>
+                                    <a href='/dailyresult?date=<%=formattedDateOneDayBefore%>' >
+                                        <h1 class="aero">Click for <%= dayOneDayBefore+" "+oneDayBefore.toDateString().substring(4,7)  %></h1>
                                     </a>
                                 </td>
 
                                 <td class="e-link">
-                                    <a href="/dailyresult?date=<%=formattedDate  %>">
-                                        <h1 class="aero"><%=`${currentMonth.substring(0,3)} ${year}`  %></h1>
+                                    <a href="/dailyresult?date=<%=formattedDateTwoDaysBefore  %>">
+                                        <h1 class="aero">Click for <%=dayTwoDaysBefore+" "+twoDaysBefore.toDateString().substring(4,7) %></h1>
                                     </a>
                                 </td>
                             </tr>
                 </table>
             </div>
+            <!-- *********************Mumbai starline result  END********************** -->    
+             
+            
+            <!-- ***************************Monthly Chart START*********************************** -->
+            
+            <div id="mix-chart" class="chart">
+                <table class="chart-table">
+                    <tr class="chart-head">
+                        <td colspan="7" class="month">
+                            <h1> Monthly Satta-Bazar-Starline Result Chart for <%= todayDate.toLocaleString('default', {
+                                    month: 'long' }) %>
+                                    <%= todayDate.getFullYear() %>
+                            </h1>
+                        </td>
+                    </tr>
+                    <tr class="date-name">
+                        <td class="date" title="Days in the current month">DATE</td>
+                        <% monthlyResults.forEach(game=> { %>
+                            <th class="name">
+                                <%= game._id %>
+                            </th> <!-- Game name -->
+                            <% }) %>
+                    </tr>
+    
+                    <!-- Get the number of days in the current month -->
+                                <!-- Last day of the current month -->
+                                <!-- Loop through each day of the month -->
+                <% for (let day=1; day <=daysInMonth; day++) { %>
+                                    <tr class="day-number">
+                                        <td class="day"
+                                            title="<%= todayDate.toLocaleString('default', { month: 'long' }) %> <%= day < 10 ? '0' + day : day %>, <%= year %>">
+                                            <%= day < 10 ? '0' + day : day %>
+                                        </td>
+    
+                                        <% monthlyResults.forEach(game=> {
+                                            // Find the result for the current day
+                                            let result = game.resultsByDay.find(r => {
+                                            const resultDate = new Date(r.date);
+                                            return resultDate.getDate() === day && resultDate.getMonth() === monthZeroIndex &&
+                                            resultDate.getFullYear() === year;
+                                            });
+                                        
+                                            %>
+                                            <td class="number">
+                                                <%= result ? result.result.toString().padStart(2,"0") : 'XX' %>
+                                            </td>
+                                            <% }) %>
+                                    </tr>
+                                    <% } %>
+                </table>
+            </div>
+    
 
-            <!-- *********************Mumbai starline result  END********************** -->            
+
+            <!-- *************************Monthly Chart END*********************************** -->
 
             <div class="nav-link" title=" Satta Result Chart With Record">
                 <a href="/monthlyResult?month=<%=month%>&year=<%=year%>">
@@ -268,7 +340,7 @@
         <div class="ads" style="padding:8px 0; margin:8px 0; background: white">
             <h2 style="color:green; font-size: big; line-height: 1.5;">
                 हमसे संपर्क करने के लिए ➡️
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdmvaMiS2PcwkDeHu9fEK2uwzUoGRA-LzRYNuBtI0VL14J4lw/viewform?usp=sf_link"
+                <a href="#"
                     style="color:blue; font-size: big"> यहाँ क्लिक करें</a>
             </h2>
         </div>

@@ -51,7 +51,7 @@ app.get("/", async (req, res) => {
     const timeInMilli = new Date(resultWithMumbai.date).getTime();
 
     // Set today's date and start of the month at the top
-    const todayDate = new Date(); 
+    const todayDate = new Date();
     const startDate = new Date(
       todayDate.getFullYear(),
       todayDate.getMonth(),
@@ -98,6 +98,40 @@ app.get("/", async (req, res) => {
       result: result.result, // Assuming 'result' is your field name
     }));
 
+    // ***********************Monthly result for index START*************************************
+    // Start of the month (1st day of the current month in local time)
+    const startOfMonth = new Date(
+      todayDate.getFullYear(),
+      todayDate.getMonth(),
+      1
+    );
+    // Fetch monthly results
+    const monthlyResults = await Result.aggregate([
+      {
+        $match: {
+          game: { $ne: "Mumbai Starline" }, // Exclude Mumbai Starline
+          date: { $gte: startOfMonth, $lte: todayDate }, // Only consider data from start of the month to end
+        },
+      },
+      {
+        $sort: { date: -1 }, // Sort by latest date first
+      },
+      {
+        $group: {
+          _id: "$game", // Group by game
+          resultsByDay: {
+            $push: {
+              date: "$date",
+              result: "$result",
+            },
+          },
+        },
+      },
+    ]);
+
+    
+    // ***********************Monthly result for index END*************************************
+
     // Render the EJS template, passing the data for the latest result and today's results
     res.render("index", {
       data: resultWithMumbai,
@@ -107,6 +141,7 @@ app.get("/", async (req, res) => {
       otherGames: latestResults,
       todayDate,
       oneDayBefore,
+      monthlyResults
     });
   } catch (err) {
     console.error("Error fetching results:", err);
