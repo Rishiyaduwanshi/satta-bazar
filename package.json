@@ -1,17 +1,17 @@
 {
-  "name": "library-management-system",
+  "name": "satta-bazar-starline",
   "version": "1.0.0",
-  "description": "This is a library management system for school, colleges and universities with frontend along with backend using node,express,ejs,html,css, jquery,bootstrap and other node modules.",
+  "description": "satta-bazar-starline",
   "main": "server.js",
   "scripts": {
     "dev": "nodemon server.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "pro" : "node server.js"
   },
   "keywords": [
     "Abhinav",
     "Prakash",
-    "Abhinav",
-    "lms"
+    "Abhinav"
   ],
   "author": "Abhinav Prakash",
   "license": "ISC",
@@ -25,6 +25,7 @@
     "express-session": "^1.18.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.3.0",
+    "node": "^20.18.0",
     "toastr": "^2.1.4"
   }
 }

@@ -20,7 +20,7 @@ async function checkResult(req, res, next) {
             } else {
                 req.flash("error", `You have already submitted a result for ${game} on date ${date}.`);
             }
-            return res.redirect('/submitresult');
+            return res.redirect('/submitResult');
         }
 
         // If no conditions were met, proceed to the next middleware or route handler
@@ -29,7 +29,7 @@ async function checkResult(req, res, next) {
     } catch (error) {
         console.error("Error checking result:", error);
         req.flash("error", "An error occurred while checking results.");
-        res.redirect("/submitresult");
+        res.redirect("/submitResult");
     }
 }
 

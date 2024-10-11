@@ -153,8 +153,8 @@ app.get("/", async (req, res) => {
 
 // }
 
-app.get("/submitresult", (req, res) => {
-  res.render("submitresult", {
+app.get("/submitResult", (req, res) => {
+  res.render("submitResult", {
     gameList,
     success: req.flash("success"),
     error: req.flash("error"),
@@ -163,7 +163,7 @@ app.get("/submitresult", (req, res) => {
 });
 
 app.post(
-  "/submitresult",
+  "/submitResult",
   require("./middlewares/checkResult"),
   async (req, res) => {
     const { game, date, result, time } = req.body; // Assume these values are coming from the form
@@ -177,11 +177,11 @@ app.post(
       });
       await newResult.save();
       req.flash("success", "Result submitted successfully!");
-      res.redirect("/submitresult");
+      res.redirect("/submitResult");
     } catch (err) {
       console.error("Error submitting result:", err);
       req.flash("error", "Could not save result");
-      res.redirect("/submitresult");
+      res.redirect("/submitResult");
     }
   }
 );
@@ -202,37 +202,8 @@ app.post(
 //   }
 // });
 
-app.get("/api/results", async (req, res) => {
-  try {
-    const todayDate = new Date();
-    const startDate = new Date(
-      todayDate.getFullYear(),
-      todayDate.getMonth(),
-      todayDate.getDate()
-    );
 
-    const results = await Result.find({
-      game: "Mumbai Starline",
-      date: { $gte: startDate },
-    }).sort({ date: 1 });
-
-    // Assuming results contain time and number fields
-    const formattedResults = results.map((result) => ({
-      time: result.time, // Assuming you have 'time' field
-      number: result.number, // Assuming you have 'number' field
-    }));
-
-    // Render EJS and pass gameName and formattedResults
-    res.render("results", {
-      gameName: "Mumbai Starline",
-      results: formattedResults,
-    });
-  } catch (err) {
-    res.status(501).json({ Error: err, message: "Unable to retrieve data" });
-  }
-});
-
-app.get("/monthlyresult", async (req, res) => {
+app.get("/monthlyResult", async (req, res) => {
   try {
     const month = parseInt(req.query.month, 10); // Get the selected month
     const year = parseInt(req.query.year, 10); // Get the selected year
@@ -265,7 +236,7 @@ app.get("/monthlyresult", async (req, res) => {
       },
     ]);
 
-    res.render("monthlyresult", {
+    res.render("monthlyResult", {
       monthlyResults: monthlyGameResults,
       todayDate: endOfMonth, // Optionally set todayDate to endOfMonth for display
     });
@@ -277,7 +248,7 @@ app.get("/monthlyresult", async (req, res) => {
 
 app.get("/signup", (req, res) => {
   const adminCountError = req.flash("adminCountError");
-  res.render("adminsignup", { adminCountError });
+  res.render("adminSignup", { adminCountError });
 });
 app.post("/signup", require("./middlewares/adminCount"), async (req, res) => {
   try {
@@ -307,7 +278,7 @@ app.post("/signup", require("./middlewares/adminCount"), async (req, res) => {
 app.get("/signin", (req, res) => {
   const error = req.flash("error");
   const success = req.flash("success");
-  res.render("adminsignin", { error, success });
+  res.render("adminSignin", { error, success });
 });
 
 app.post("/signin", require("./auth/adminAuth").signin, (req, res) => {
@@ -321,7 +292,7 @@ app.get("/dailyResult", async (req, res) => {
   try {
     if (typeof date == "undefined") {
       res.redirect(
-        `/dailyresult/?date=${new Date().toISOString().substring(0, 10)}`
+        `/dailyResult/?date=${new Date().toISOString().substring(0, 10)}`
       );
     }
     if (typeof date === "string") {
@@ -336,7 +307,7 @@ app.get("/dailyResult", async (req, res) => {
 
       const todayDate = d.toDateString();
 
-      res.render("dailyresult", {
+      res.render("dailyResult", {
         data: gameList,
         fetchResult,
         todayDate,
