@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "dev": "nodemon server.js",
-    "start": "TZ='Asia/Kolkat' node server.js",
+    "start": "TZ='Asia/Kolkata' node server.js",
     "pro": "node server.js"
   },
   "keywords": [
