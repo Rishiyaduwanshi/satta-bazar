@@ -22,9 +22,11 @@ app.use(
   session({
     secret: process.env.SECRET_KEY,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
+    cookie : { secure : process.env.PRO_MODE || process.env.DEV_MODE , maxAge : 1000*60*60*24}
   })
 );
+
 
 app.get("/", async (req, res) => {
   try {
@@ -325,10 +327,15 @@ app.get("*", (req, res) => {
   res.status(404).render("404"); // Render the 404 page with a 404 status code
 });
 
+
+console.log(`Timezone: ${process.env.TZ}`);
+const serverDate = new Date();
+console.log(`Current Date and Time in India: ${serverDate.toString()}`);
+
 app.listen(process.env.PORT || PORT, () => {
   console.log(
     `Server listening on port ${process.env.PORT || PORT} http://localhost:${
       process.env.PORT || PORT
-    }`
+    }, Running in ${process.env.PRO_MODE ? "Production" : 'Development'} mode`
   );
 });

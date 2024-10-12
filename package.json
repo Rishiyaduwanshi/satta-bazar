@@ -5,13 +5,13 @@
   "main": "server.js",
   "scripts": {
     "dev": "nodemon server.js",
-    "start": "node server.js",
-    "pro" : "node server.js"
+    "start": "TZ='Asia/Kolkat' node server.js",
+    "pro": "node server.js"
   },
   "keywords": [
     "Abhinav",
     "Prakash",
-    "Abhinav"
+    "Abhinav Prakash"
   ],
   "author": "Abhinav Prakash",
   "license": "ISC",
@@ -20,7 +20,6 @@
     "connect-flash": "^0.1.1",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.9",
-    "env": "^0.0.2",
     "express": "^4.19.2",
     "express-session": "^1.18.0",
     "jsonwebtoken": "^9.0.2",
