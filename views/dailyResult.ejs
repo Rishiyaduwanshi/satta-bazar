@@ -1,14 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
+<%- include('./partials/header', { 
+    title: 'Daily Result of Satta Bazar Starline',
+    externalCSS: [
+        '/stylesheets/navbar.css',
+        '/stylesheets/monthlyresult.css'  
+    ],
+    internalCSS: `
+        .chart {
+            min-height: 100vh;
+        }
+        #submitbtn {
+            padding: 10px 15px;
+            background-color: #33cc99;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1.2em;
+        }
+        #submitbtn:hover {
+            background-color: #218838;
+        }
+        label {
+            padding: 10px 15px;
+            color: #2c3e50;
+            font-size: 1em;
+        }
+        input[type="date"] {
+            padding: 10px;
+            margin: 0 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+        }
+        input[type="date"]:hover {
+            cursor: pointer;
+        }
+    `
+}) %>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Result</title>
-    <!-- <link rel="stylesheet" href="/stylesheets/index.css"> -->
-    <link rel="stylesheet" href="/stylesheets/monthlychart.css">
-    <link rel="stylesheet" href="/stylesheets/navbar.css">
-</head>
 
 <body>
 <% const currentMonth = todayDate.toLocaleString('default', { month: 'long' });  %>
@@ -64,12 +93,8 @@
           
             </table>
           </div>
-          
-
-
         <%-include('./partials/footer') %>
 <script>
 </script>
 </body>
-
 </html>

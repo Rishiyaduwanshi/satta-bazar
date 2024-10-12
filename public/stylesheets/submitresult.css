@@ -1,0 +1,46 @@
+body {
+    background-color: var(--background-color-light);
+    font-family: var(--font-family);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+}
+
+h2 {
+    color: var(--border-color-dark-blue);
+    font-weight: bold;
+}
+
+label {
+    font-weight: var(--font-weight-bold);
+}
+
+select,
+input {
+    border-color: var(--border-color-dark-blue);
+}
+
+button {
+    background-color: var(--bg-color-blue);
+    color: var(--color-white);
+}
+
+button:hover {
+    background-color: var(--color-black);
+}
+
+.container {
+    background-color: var(--bg-color-light-gray);
+    padding: 20px;
+    border-radius: 8px;
+    flex-grow: 1;
+    /* min-height: 75vh;
+    min-height: calc(100vh - 70px - 50px); */
+}
+
+
+
+.form-label {
+    font-size: var(--font-size-normal);
+}

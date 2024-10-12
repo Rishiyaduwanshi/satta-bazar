@@ -1,17 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="/stylesheets/global.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link rel="stylesheet" href="/toastr/toastr.min.css">
-    <script src="/toastr/toastr.min.js"></script>
-
-    <style>
-        /* Body styling */
-        body {
+<%- include('./partials/header', { 
+    title: 'Signin',
+    externalCSS: [
+        'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css',
+        '/toastr/toastr.min.css',
+        '/stylesheets/submitresult.css'
+    ],
+    externalScripts: [
+        "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js",
+        "https://code.jquery.com/jquery-3.6.0.min.js",
+        "/toastr/toastr.min.js"
+    ],
+    internalCSS : `body {
             font-family: var(--font-family);
             background-color: var(--background-color-light);
             display: flex;
@@ -85,9 +84,12 @@
 
         p a:hover {
             text-decoration: underline;
-        }
-    </style>
-</head>
+        }`
+}) %>
+
+
+
+
 <body>
     <div class="login-container">
         <h1>Login</h1>

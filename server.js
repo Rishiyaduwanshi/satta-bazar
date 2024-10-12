@@ -1,6 +1,6 @@
 const express = require("express");
 const path = require("path");
-const ejs = require("ejs");
+require("ejs");
 const app = express();
 const session = require("express-session");
 const flash = require("connect-flash");
@@ -290,7 +290,6 @@ app.post("/signin", require("./auth/adminAuth").signin, (req, res) => {
 // const date = '2024-11-31'
 app.get("/dailyResult", async (req, res) => {
   const { date } = req.query;
-  console.log(date);
   try {
     if (typeof date == "undefined") {
       res.redirect(
@@ -339,3 +338,4 @@ app.listen(process.env.PORT || PORT, () => {
     }, Running in ${process.env.PRO_MODE ? "Production" : 'Development'} mode`
   );
 });
+

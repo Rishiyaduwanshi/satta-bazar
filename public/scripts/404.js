@@ -3,7 +3,7 @@ To Customize Theme Color
 */
 
 const colorSwitcher = document.querySelector("[data-theme-color-switch]");
-let currentTheme = "light";
+let currentTheme = "dark";
 
 colorSwitcher.addEventListener("click", function () {
 	const root = document.documentElement;

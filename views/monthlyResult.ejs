@@ -1,14 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
+<%- include('./partials/header', { 
+    title: 'Monthly Result of Satta Bazar Starline',
+    externalCSS: [
+        '/stylesheets/navbar.css',
+        '/stylesheets/monthlyresult.css'  
+    ]
+}) %>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <!-- <link rel="stylesheet" href="/stylesheets/index.css"> -->
-    <link rel="stylesheet" href="/stylesheets/monthlychart.css">
-    <link rel="stylesheet" href="/stylesheets/navbar.css">
-</head>
 
 <body>
 
@@ -99,7 +96,6 @@
 
 
         <%-include('./partials/footer') %>
-
 </body>
 
 </html>
