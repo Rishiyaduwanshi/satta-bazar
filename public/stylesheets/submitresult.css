@@ -26,9 +26,6 @@ button {
     color: var(--color-white);
 }
 
-button:hover {
-    background-color: var(--color-black);
-}
 
 .container {
     background-color: var(--bg-color-light-gray);

@@ -83,11 +83,25 @@
 
         p a:hover {
             text-decoration: underline;
+        }
+
+        /* Password toggle button */
+        .password-container {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            background: none;
+            border: none;
+            outline: none;
+            color: #007bff; /* Customize color */
         }`
 }) %>
-
-
-
 
 <body>
     <div class="signup-container">
@@ -107,106 +121,65 @@
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" required autocomplete="new-password"
-                    placeholder="atleast 6 digit ">
+                <div class="password-container">
+                    <input type="password" id="password" name="password" class="password-input" required autocomplete="new-password"
+                        placeholder="atleast 6 digit ">
+                    <button type="button" class="toggle-password" aria-label="Toggle password visibility">
+                        🙈
+                    </button>
+                </div>
             </div>
             <div class="form-group">
                 <label for="confirmPassword">Confirm Password</label>
-                <input type="password" id="confirmPassword" name="confirmPassword" required autocomplete="new-password"
-                    placeholder="atleast 6 digit">
+                <div class="password-container">
+                    <input type="password" id="confirmPassword" name="confirmPassword" required autocomplete="new-password"
+                        placeholder="atleast 6 digit" class="password-input">
+                    <button type="button" class="toggle-password" aria-label="Toggle password visibility">
+                        🙈
+                    </button>
+                </div>
             </div>
             <button type="submit" class="btn">Sign Up</button>
         </form>
         <p>Already have an account? <a href="/signin">Sign here</a></p>
     </div>
 
+    <script src="/scripts/adminSignupValidation.js"></script>
     <script>
-        const signupForm = document.querySelector('.signup-form');
-        const signupUsernameInput = document.getElementById('username');
-        const signupEmailInput = document.getElementById('email');
-        const signupPasswordInput = document.getElementById('password');
-        const signupConfirmPasswordInput = document.getElementById('confirmPassword');
+        const togglePasswords = document.querySelectorAll('.toggle-password');
 
-        const errorColor = "var(--color-red)"; // Use your specified color for errors
-
-        signupForm.addEventListener('submit', function (e) {
-            let valid = true;
-
-            // Reset input styles
-            signupUsernameInput.style.borderColor = '';
-            signupEmailInput.style.borderColor = '';
-            signupPasswordInput.style.borderColor = '';
-
-            const username = signupUsernameInput.value.trim();
-            const email = signupEmailInput.value.trim();
-            const password = signupPasswordInput.value.trim();
-            const confirmPassword = signupConfirmPasswordInput.value.trim();
-
-            // Regex for validating email format
-            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-            // Check if username is filled
-            if (username === '') {
-                alert('Username is required.');
-                signupUsernameInput.style.borderColor = errorColor;
-                valid = false;
-            }
-
-            // Check if email is filled and valid
-            if (email === '') {
-                alert('Email is required.');
-                signupEmailInput.style.borderColor = errorColor;
-                valid = false;
-            } else if (!emailPattern.test(email)) {
-                alert('Invalid email format.');
-                signupEmailInput.style.borderColor = errorColor;
-                valid = false;
-            }
-
-            // Check if password is filled
-            if (password === '') {
-                alert('Password is required.');
-                signupPasswordInput.style.borderColor = errorColor;
-                valid = false;
-            }
-
-
-
-            if (confirmPassword != password) {
-                alert('password did not match.')
-                signupConfirmPasswordInput.style.borderColor = errorColor;
-                valid = false;
-            
-            }
-
-            if (password.length <= 5) {
-                alert('Password length should be atleast 6 digit')
-                signupConfirmPasswordInput.style.borderColor = errorColor;
-                signupPasswordInput.style.borderColor = errorColor;
-                valid = false;
-            }
-
-            // If any validation fails, prevent form submission
-            if (!valid) {
-                e.preventDefault();
-            }
-        });
-    
-
-            '<% if (adminCountError.length>0) { %>'
-                toastr.error("<%= adminCountError %>");
-            '<% } %>'
+        // Get all password input fields
+        const passwordInputs = document.querySelectorAll('.password-input');
         
+        togglePasswords.forEach(toggle => {
+            toggle.addEventListener('click', function () {
+                // Check if password inputs are available
+                if (passwordInputs.length > 0) {
+                    // Determine the new type based on the first password input
+                    const firstPasswordInput = passwordInputs[0];
+                    const type = firstPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                    
+                    // Set the type for all password inputs
+                    passwordInputs.forEach(input => {
+                        input.setAttribute('type', type);
+                    });
+        
+                    // Change icon based on visibility
+                    togglePasswords.forEach(t => {
+                        t.textContent = type === 'password' ? '🙈' : '👁️'; 
+                    });
+                } else {
+                    console.error('No password inputs found.');
+                }
+            });
+        });
+        
+
+
+        '<% if (adminCountError.length > 0) { %>'
+            toastr.error("<%= adminCountError %>");
+        '<% } %>'
+    
     </script>
-
-
-
-    <!-- Signup form code -->
-
 </body>
-
-
-
-
-
 </html>
