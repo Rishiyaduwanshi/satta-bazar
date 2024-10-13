@@ -1,34 +1,24 @@
+const jwt = require('jsonwebtoken');
 
-// // const Admin = require('../models/adminSchema');
-// const bcrypt = require('bcrypt');
+module.exports = (req, res, next) => {
+  const token = req.cookies.token; // Get token from cookies
 
-// module.exports = {
-//   isLogin: async (req, res, next) => {
-//     try {
-//       const { usernameOrEmail, password } = req.body;
+  // Check if token exists
+  if (!token) {
+    req.flash("error", "Access denied. Please login.");
+    return res.redirect("/signin");
+  }
 
-//       // Find admin by email or username
-//       const fetchAdmin = await Admin.findOne({
-//         $or: [{ email: usernameOrEmail }, { username: usernameOrEmail }]
-//       });
-      
-//       const isMatch = await bcrypt.compare(password, fetchAdmin.password);
+  try {
+    // Verify the token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    
+    // Attach the decoded user info to the request object (optional)
+    req.user = decoded; // Now you can access `req.user` in protected routes
 
-//       if (!fetchAdmin || !isMatch) {
-//         // If admin is not found
-//         req.flash('error', 'Invalid credentials');
-//         return res.redirect('/signin');
-//       }
-
-//       // Successful login
-//       req.flash('success', 'Login successful!');
-//       return res.redirect('/submitresult');
-
-
-//     } catch (err) {
-//       // Handle any errors
-//       req.flash('error', 'An error occurred during login.');
-//       return res.redirect('/signin');
-//     }
-//   }
-// };
+    next(); // Proceed to the next middleware or route handler
+  } catch (err) {
+    req.flash("error", "Invalid or expired token. Please login again.");
+    return res.redirect("/signin");
+  }
+};

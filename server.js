@@ -4,6 +4,7 @@ require("ejs");
 const app = express();
 const session = require("express-session");
 const flash = require("connect-flash");
+const cookieParser = require('cookie-parser');
 require("dotenv").config();
 require("./dbConnection");
 app.set("view engine", "ejs");
@@ -14,6 +15,7 @@ const { logError } = require("./utils/log");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cookieParser())
 app.use(express.static(path.join(__dirname, "public")));
 app.use(
   session({
@@ -149,7 +151,7 @@ app.get("/", async (req, res) => {
 });
 
 
-app.get("/submitResult", (req, res) => {
+app.get("/submitResult", require('./auth/isLoginAuth'),(req, res) => {
   res.render("submitResult", {
       gameList,
       success: req.flash("success"),
@@ -160,7 +162,7 @@ app.get("/submitResult", (req, res) => {
 
 app.post(
   "/submitresult",
-  require("./middlewares/checkResult"),
+  require("./middlewares/checkResult"), require('./auth/isLoginAuth'),
   async (req, res) => {
       const { game, date, result, time } = req.body;
       const dateObject = new Date(date + "T" + time);
@@ -248,6 +250,7 @@ app.get("/signup", (req, res) => {
 });
 app.post("/signup", require("./middlewares/adminCount"), async (req, res) => {
   try {
+    const {createToken} = require("./auth/adminAuth")
     const { name, email, username, password } = req.body;
 
     const saveAdmin = new adminSchema({
@@ -257,6 +260,8 @@ app.post("/signup", require("./middlewares/adminCount"), async (req, res) => {
       password,
     });
     await saveAdmin.save();
+
+    createToken({ username: username }, "0.5h", res);
 
     req.flash("signupSuccess", "Signup Successfull");
     res.redirect("/submitResult");

@@ -152,11 +152,11 @@
         });
 
               '<% if (error.length>0) { %>'
-                toastr.error("<%= error %>");
+                toastr.error("<%= error[0] %>");
             '<% } %>'
     
             '<% if (success.length>0) { %>'
-                toastr.success("<%= success %>");
+                toastr.success("<%= success[0] %>");
             '<% } %>'
     </script>
     

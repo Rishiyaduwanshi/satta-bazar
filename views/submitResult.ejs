@@ -63,11 +63,9 @@
         $(document).ready(function() {
             <% if (success.length) { %>
                 toastr.success("<%= success[0] %>");
-                console.log(success);
             <% } %>
             <% if (error.length) { %>
                     toastr.error("<%= error[0] %>");
-                    console.log(error);
             <% } %>
             <% if (signupSuccess.length) { %>
                 toastr.success("<%= signupSuccess %>");
