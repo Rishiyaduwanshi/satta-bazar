@@ -3,33 +3,46 @@ const resultSchema = require("../models/resultSchema");
 async function checkResult(req, res, next) {
     try {
         const { game, date, time } = req.body;
-        const dateObject = new Date(date + "T" + time);
+        // Combine date and time to create a Date object
+        const dateObject = new Date(`${date}T${time}:00`); // Assuming time format is "HH:mm"
         
-        // Check for existing result
-        const existingResult = await resultSchema.findOne({
-            date: dateObject,
-            $or: [
-                { game: "Mumbai Starline" },
-                { game: { $ne: "Mumbai Starline" } }
-            ]
-        });
+        // Check if the game is Mumbai Starline
+        if (game === "Mumbai Starline") {
+            // Check for Mumbai Starline with exact date and time
+            const existingResult = await resultSchema.findOne({
+                game: "Mumbai Starline",
+                date: dateObject // Check with exact date and time
+            });
 
-        if (existingResult) {
-            if (game === "Mumbai Starline") {
-                req.flash("error", "Result for Mumbai Starline already exists for this date and time.");
-            } else {
-                req.flash("error", `You have already submitted a result for ${game} on date ${date}.`);
+            if (existingResult) {
+                req.flash("error", `Result for Mumbai Starline already exists on ${date} and ${time}.`);
+                return res.redirect('/submitresult');
             }
-            return res.redirect('/submitResult');
+        } else {
+            // For other games, check if a result exists for the same date (ignore time)
+            const startOfDay = new Date(date);
+            startOfDay.setHours(0, 0, 0, 0); // Start of the day
+            const endOfDay = new Date(date);
+            endOfDay.setHours(23, 59, 59, 999); // End of the day
+
+            const existingResult = await resultSchema.findOne({
+                game: game, // Check for the same game
+                date: { $gte: startOfDay, $lte: endOfDay } // Check only for the same date
+            });
+
+            if (existingResult) {
+                req.flash("error", `Result for ${game} already exists on ${date}`);
+                return res.redirect('/submitresult');
+            }
         }
 
-        // If no conditions were met, proceed to the next middleware or route handler
+        // If no conflicts found, proceed to the next middleware
         next();
         
     } catch (error) {
         console.error("Error checking result:", error);
         req.flash("error", "An error occurred while checking results.");
-        res.redirect("/submitResult");
+        return res.redirect("/submitResult");
     }
 }
 

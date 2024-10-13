@@ -14,19 +14,16 @@ const { logError } = require("./utils/log");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(flash());
 app.use(express.static(path.join(__dirname, "public")));
-
-// Session and Flash Middleware
 app.use(
   session({
     secret: process.env.SECRET_KEY,
     resave: false,
     saveUninitialized: false,
-    cookie : { secure : process.env.PRO_MODE || process.env.DEV_MODE , maxAge : 1000*60*60*24}
+    cookie : { secure : (process.env.PRO_MODE === 'false') ? false : true , maxAge : 1000*60*60*24}
   })
 );
-
+app.use(flash());
 
 app.get("/", async (req, res) => {
   try {
@@ -151,40 +148,37 @@ app.get("/", async (req, res) => {
   }
 });
 
-// const isAdmin = () =>{
-
-// }
 
 app.get("/submitResult", (req, res) => {
   res.render("submitResult", {
-    gameList,
-    success: req.flash("success"),
-    error: req.flash("error"),
-    signupSuccess: req.flash("signupSuccess"),
+      gameList,
+      success: req.flash("success"),
+      error: req.flash("error"),
+      signupSuccess: req.flash("signupSuccess"),
   });
 });
 
 app.post(
-  "/submitResult",
+  "/submitresult",
   require("./middlewares/checkResult"),
   async (req, res) => {
-    const { game, date, result, time } = req.body; // Assume these values are coming from the form
-    const dateObject = new Date(date + "T" + time);
+      const { game, date, result, time } = req.body;
+      const dateObject = new Date(date + "T" + time);
 
-    try {
-      const newResult = new Result({
-        game,
-        date: dateObject,
-        result,
-      });
-      await newResult.save();
-      req.flash("success", "Result submitted successfully!");
-      res.redirect("/submitResult");
-    } catch (err) {
-      console.error("Error submitting result:", err);
-      req.flash("error", "Could not save result");
-      res.redirect("/submitResult");
-    }
+      try {
+          const newResult = new Result({
+              game,
+              date: dateObject,
+              result,
+          });
+          await newResult.save();
+          req.flash("success", "Result submitted successfully!");
+          res.redirect("/submitResult");
+      } catch (err) {
+          console.error("Error submitting result:", err);
+          req.flash("error", "Could not save result");
+          res.redirect("/submitResult");
+      }
   }
 );
 
@@ -335,7 +329,7 @@ app.listen(process.env.PORT || PORT, () => {
   console.log(
     `Server listening on port ${process.env.PORT || PORT} http://localhost:${
       process.env.PORT || PORT
-    }, Running in ${process.env.PRO_MODE ? "Production" : 'Development'} mode`
+    }, Running in ${process.env.PRO_MODE === 'true' ? "Production" : 'Development'} mode`
   );
 });
 

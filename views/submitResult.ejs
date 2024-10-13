@@ -60,18 +60,25 @@
 
     <!-- <script src="/scripts/date.js"></script> -->
     <script>
-        '<% if (signupSuccess.length > 0) { %>'
-            toastr.success("<%= signupSuccess %>");
-        '<% } %>'
+        $(document).ready(function() {
+            <% if (success.length) { %>
+                toastr.success("<%= success[0] %>");
+                console.log(success);
+            <% } %>
+            <% if (error.length) { %>
+                    toastr.error("<%= error[0] %>");
+                    console.log(error);
+            <% } %>
+            <% if (signupSuccess.length) { %>
+                toastr.success("<%= signupSuccess %>");
+            <% } %>
+        });
+
+
+
+    </script>
     
-        '<% if (success.length > 0) { %>'
-            toastr.success('<%= success %>');
-        '<% } %>'
-    
-        '<% if (error.length > 0) { %>'
-            toastr.error('<%= error %>');
-        '<% } %>'
-    
+    <script>    
         const submitBtn = document.getElementById("formSubmit");
         const timeInput = document.getElementById("time");
         const resultForm = document.getElementById("resultForm");
