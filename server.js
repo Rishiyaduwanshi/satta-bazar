@@ -17,12 +17,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, "public")));
+
 app.use(
   session({
     secret: process.env.SECRET_KEY,
     resave: false,
     saveUninitialized: false,
-    cookie : { secure : (process.env.PRO_MODE === 'false') ? false : true , maxAge : 1000*60*60*24}
+    cookie : { secure : false, maxAge : 1000*60*60*24}
   })
 );
 app.use(flash());

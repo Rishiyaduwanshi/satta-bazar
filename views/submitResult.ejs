@@ -40,7 +40,7 @@
             <!-- Time Input -->
             <div class="mb-3" id="timeInput">
                 <label for="time" class="form-label">Time</label>
-                <input type="time" id="time" name="time" class="form-control" required max="22:00" min="10:00">
+                <input type="time" id="time" name="time" class="form-control" required >
             </div>
         
             <!-- Result Input -->
@@ -79,23 +79,29 @@
     <script>    
         const submitBtn = document.getElementById("formSubmit");
         const timeInput = document.getElementById("time");
+        const gameName = document.getElementById("game"); 
         const resultForm = document.getElementById("resultForm");
     
-        // Function to validate time input
-        function validateTime() {
+        // Function to validate if the time is outside 10:00 AM to 10:00 PM
+        
+        function validateTimeAndGame() {
             const timeValue = timeInput.value;
-            const hour = parseInt(timeValue.substring(0, 2)); // Extract hour
-            return hour >= 10 && hour <= 22; // Validation passed if within range
+            const gameValue = gameName.value;  
+            const hour = parseInt(timeValue.substring(0, 2)); 
+            const minute = parseInt(timeValue.substring(3)); 
+            return gameValue === "Mumbai Starline" && ((hour <=10  || hour >=22) && minute>= 1 )
         }
     
-        // Event listener for the submit button
         submitBtn.addEventListener("click", function(event) {
-            if (!validateTime()) {
-                event.preventDefault(); // Prevent form submission
-                toastr.error("Time should be between 10:00 AM to 10:00 PM");
+            // I have made this change: Only block "Mumbai Starline" outside 10:00 AM to 10:00 PM
+            if (validateTimeAndGame()) {
+                event.preventDefault();
+                toastr.error("Mumbai Starline is only allowed between 10:00 AM to 10:00 PM.");
             }
+            // I have made this change: No time restriction for other games
         });
     </script>
+    
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             // Retrieve previous data from session storage if it exists
