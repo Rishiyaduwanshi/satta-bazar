@@ -134,68 +134,73 @@
             <!-- ***************************************Mumbai starline main END********************* -->
 
 <!-- *******************************Other Games START******************************* -->
-            <div class="main-content">
+<div class="main-content">
+    <table class="quick-result-board">
+        <tr class="board-title">
+            <th colspan="3">
+                <h1>Satta Bazar Starline Results of <%= todayDate.toDateString() %> & <%= oneDayBefore.toDateString() %></h1>
+            </th>
+        </tr>
+        <tr class="board-head">
+            <th class="games-name">
+                <h2>Games List</h2>
+            </th>
+            <th class="yesterday-date">
+                <h2><%= oneDayBefore.toDateString().substring(3,10) %></h2>
+            </th>
+            <th class="today-date">
+                <h2><%= todayDate.toDateString().substring(3,10) %></h2>
+            </th>
+        </tr>
 
-                <table class="quick-result-board">
-                    <tr class="board-title">
-                        <th colspan="3">
-                            <h1>Satta Bazar Starline Results of <%=todayDate.toDateString() %> & <%= oneDayBefore.toDateString()  %></h1>
-                        </th>
-                    </tr>
-                    <tr class="board-head">
-                        <th class="games-name">
-                            <h2>Games List</h2>
-                        </th>
-                        <th class="yesterday-date">
-                            <h2><%= oneDayBefore.toDateString().substring(3,10) %></h2>
-                        </th>
-                        <th class="today-date">
-                            <h2><%= todayDate.toDateString().substring(3,10)  %></h2>
-                        </th>
-                    </tr>
+        <% if (otherGames) { %>
+            <% otherGames.forEach(function (gameResult) { %>
+                <tr class='game-result'>
+                    <td class="game-details">
+                        <h3 class="game-name">
+                            <%= gameResult._id %>
+                        </h3> <!-- Game Name -->
+                        <h3 class="game-link"><a href="/monthlyResult?month=<%= month + 1 %>&year=<%= year %>">Record Chart</a></h3>
+                    </td>
+                    <td class="yesterday-number">
+                        <% 
+                        // Check for yesterday's result
+                        const yesterdayResult = gameResult.results.find(result => new Date(result.date).toDateString() === oneDayBefore.toDateString());
+                        %>
+                        <% if (yesterdayResult) { %>
+                            <h3>
+                                <%= yesterdayResult.result.toString().padStart(2, '0') %>
+                            </h3> <!-- Yesterday's result -->
+                        <% } else { %>
+                            <h3>XX</h3>
+                        <% } %>
+                    </td>
+                    <td class="today-number">
+                        <% 
+                        // Check for today's result
+                        const todayResult = gameResult.results.find(result => new Date(result.date).toDateString() === todayDate.toDateString());
+                        %>
+                        <% if (todayResult) { %>
+                            <h3>
+                                <%= todayResult.result.toString().padStart(2, '0') %>
+                            </h3> <!-- Today's result -->
+                        <% } else { %>
+                            <h3>XX</h3>
+                        <% } %>
+                    </td>
+                </tr>
+            <% }); %>
+        <% } %>
 
-                    <% if(otherGames) { %>
-                        <% otherGames.forEach(function(gameResult) { %>
-                            <tr class='game-result'>
-                                <td class="game-details">
-                                    <h3 class="game-name">
-                                        <%= gameResult._id %>
-                                    </h3> <!-- Game Name -->
-                                    <h3 class="game-time">Today: <%= new
-                                            Date(gameResult.latestResult.date).toLocaleTimeString([], { hour: '2-digit'
-                                            , minute: '2-digit' }) %>
-                                    </h3>
-                                    <h3 class="game-link"><a href="/monthlyResult?month=<%=month+1%>&year=<%=year%>">Record Chart</a></h3>
-                                </td>
-                                <td class="yesterday-number">
-                                    <% if(gameResult.secondLatestResult) { %>
-                                        <h3>
-                                            <%= gameResult.secondLatestResult.result.toString().padStart(2,'0') %>
-                                        </h3> <!-- Yesterday's result -->
-                                        <% } else { %>
-                                            <h3>N/A</h3>
-                                            <% } %>
-                                </td>
-                                <td class="today-number">
-                                    <h3>
-                                        <%= gameResult.latestResult.result.toString().padStart(2,'0') %>
-                                    </h3> <!-- Today's result -->
-                                </td>
-                            </tr>
-                            <% }) %>
-                                <% } %>
+        <tr class="board-head" id="old">
+            <th colspan="3">
+                <h2><a href="/monthlyresult?month=<%= month %>&year=<%= year %>">Click here for game monthly results.</a></h2>
+            </th>
+        </tr>
+    </table>
+</div>
 
 
-
-
-                                    <tr class="board-head" id="old">
-                                        <th colspan="3">
-                                            <h2><a href="/monthlyresult?month=<%=month  %>&year=<%=year  %>">Click here for game monthly results.</a></h2>
-                                        </th>
-                                    </tr>
-                </table>
-
-            </div>
 <!-- *******************************Other Games END******************************* -->
             <!-- ***********************Mumbai starline result  START********************* -->
             <div id="starline-result" class="chart">

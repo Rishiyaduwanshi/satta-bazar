@@ -4,7 +4,7 @@ require("ejs");
 const app = express();
 const session = require("express-session");
 const flash = require("connect-flash");
-const cookieParser = require('cookie-parser');
+const cookieParser = require("cookie-parser");
 require("dotenv").config();
 require("./dbConnection");
 app.set("view engine", "ejs");
@@ -15,14 +15,17 @@ const { logError } = require("./utils/log");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cookieParser())
+app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(
   session({
     secret: process.env.SECRET_KEY,
     resave: false,
     saveUninitialized: false,
-    cookie : { secure : (process.env.PRO_MODE === 'false') ? false : true , maxAge : 1000*60*60*24}
+    cookie: {
+      secure: process.env.PRO_MODE === "false" ? false : true,
+      maxAge: 1000 * 60 * 60 * 24,
+    },
   })
 );
 app.use(flash());
@@ -65,16 +68,18 @@ app.get("/", async (req, res) => {
     }).sort({ date: 1 });
 
     /**************************************************Other games  START***************** */
-    // One day before today
-    const oneDayBefore = new Date(startDate);
-    oneDayBefore.setDate(startDate.getDate() - 1);
+    const today = new Date();
+    const oneDayBefore = new Date(today);
+    oneDayBefore.setDate(today.getDate() - 1);
+    // Set time to 00:00:00 to get the start of the day
+    today.setHours(0, 0, 0, 0);
+    oneDayBefore.setHours(0, 0, 0, 0);
 
-    // Aggregating to get the latest and second latest result per game (excluding "Mumbai Starline")
     const latestResults = await Result.aggregate([
       {
         $match: {
-          game: { $ne: "Mumbai Starline" }, // Exclude Mumbai Starline
-          date: { $gte: oneDayBefore }, // Only consider today and yesterday's data
+          game: { $ne: "Mumbai Starline" }, // Exclude "Mumbai Starline"
+          date: { $gte: oneDayBefore }, // Only fetch results for today and yesterday
         },
       },
       {
@@ -83,12 +88,21 @@ app.get("/", async (req, res) => {
       {
         $group: {
           _id: "$game", // Group by game
-          latestResult: { $first: "$$ROOT" }, // Latest result
-          secondLatestResult: { $last: "$$ROOT" }, // Second latest result (yesterday's result)
+          results: {
+            $push: {
+              result: "$result",
+              date: "$date",
+            },
+          }, // Push all results into the array
+        },
+      },
+      {
+        $project: {
+          game: "$_id",
+          results: 1, // Show only game and results
         },
       },
     ]);
-
     /**********************Other games END **************************** */
     // Format today's results for the table
     const formattedResults = todayResults.map((result) => ({
@@ -130,7 +144,6 @@ app.get("/", async (req, res) => {
       },
     ]);
 
-    
     // ***********************Monthly result for index END*************************************
 
     // Render the EJS template, passing the data for the latest result and today's results
@@ -142,7 +155,7 @@ app.get("/", async (req, res) => {
       otherGames: latestResults,
       todayDate,
       oneDayBefore,
-      monthlyResults
+      monthlyResults,
     });
   } catch (err) {
     console.error("Error fetching results:", err);
@@ -150,37 +163,37 @@ app.get("/", async (req, res) => {
   }
 });
 
-
-app.get("/submitResult", require('./auth/isLoginAuth'),(req, res) => {
+app.get("/submitResult", require("./auth/isLoginAuth"), (req, res) => {
   res.render("submitResult", {
-      gameList,
-      success: req.flash("success"),
-      error: req.flash("error"),
-      signupSuccess: req.flash("signupSuccess"),
+    gameList,
+    success: req.flash("success"),
+    error: req.flash("error"),
+    signupSuccess: req.flash("signupSuccess"),
   });
 });
 
 app.post(
   "/submitresult",
-  require("./middlewares/checkResult"), require('./auth/isLoginAuth'),
+  require("./middlewares/checkResult"),
+  require("./auth/isLoginAuth"),
   async (req, res) => {
-      const { game, date, result, time } = req.body;
-      const dateObject = new Date(date + "T" + time);
+    const { game, date, result, time } = req.body;
+    const dateObject = new Date(date + "T" + time);
 
-      try {
-          const newResult = new Result({
-              game,
-              date: dateObject,
-              result,
-          });
-          await newResult.save();
-          req.flash("success", "Result submitted successfully!");
-          res.redirect("/submitResult");
-      } catch (err) {
-          console.error("Error submitting result:", err);
-          req.flash("error", "Could not save result");
-          res.redirect("/submitResult");
-      }
+    try {
+      const newResult = new Result({
+        game,
+        date: dateObject,
+        result,
+      });
+      await newResult.save();
+      req.flash("success", "Result submitted successfully!");
+      res.redirect("/submitResult");
+    } catch (err) {
+      console.error("Error submitting result:", err);
+      req.flash("error", "Could not save result");
+      res.redirect("/submitResult");
+    }
   }
 );
 
@@ -199,7 +212,6 @@ app.post(
 //     res.status(501).json({ Error: err, message: "Unable to retrive data" });
 //   }
 // });
-
 
 app.get("/monthlyResult", async (req, res) => {
   try {
@@ -250,7 +262,7 @@ app.get("/signup", (req, res) => {
 });
 app.post("/signup", require("./middlewares/adminCount"), async (req, res) => {
   try {
-    const {createToken} = require("./auth/adminAuth")
+    const { createToken } = require("./auth/adminAuth");
     const { name, email, username, password } = req.body;
 
     const saveAdmin = new adminSchema({
@@ -325,7 +337,6 @@ app.get("*", (req, res) => {
   res.status(404).render("404"); // Render the 404 page with a 404 status code
 });
 
-
 console.log(`Timezone: ${process.env.TZ}`);
 const serverDate = new Date();
 console.log(`Current Date and Time in India: ${serverDate.toString()}`);
@@ -334,7 +345,8 @@ app.listen(process.env.PORT || PORT, () => {
   console.log(
     `Server listening on port ${process.env.PORT || PORT} http://localhost:${
       process.env.PORT || PORT
-    }, Running in ${process.env.PRO_MODE === 'true' ? "Production" : 'Development'} mode`
+    }, Running in ${
+      process.env.PRO_MODE === "true" ? "Production" : "Development"
+    } mode`
   );
 });
-
