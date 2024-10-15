@@ -76,32 +76,37 @@
 
     </script>
     
-    <script>    
+    <script>
         const submitBtn = document.getElementById("formSubmit");
         const timeInput = document.getElementById("time");
         const gameName = document.getElementById("game"); 
         const resultForm = document.getElementById("resultForm");
     
         // Function to validate if the time is outside 10:00 AM to 10:00 PM
-        
         function validateTimeAndGame() {
             const timeValue = timeInput.value;
             const gameValue = gameName.value;  
             const hour = parseInt(timeValue.substring(0, 2)); 
             const minute = parseInt(timeValue.substring(3)); 
-            return gameValue === "Mumbai Starline" && ((hour <=10  || hour >=22) && minute>= 1 )
+            
+            // Check if the game is "Mumbai Starline" and time is outside the allowed range
+            if (gameValue === "Mumbai Starline") {
+                if ((hour < 10 || (hour === 22 && minute > 0)) || hour > 22) {
+                    return true; // Block submission outside 10:00 AM to 10:00 PM
+                }
+            }
+            return false; // Allow submission if other games or valid time for "Mumbai Starline"
         }
     
         submitBtn.addEventListener("click", function(event) {
-            // I have made this change: Only block "Mumbai Starline" outside 10:00 AM to 10:00 PM
+            // Block "Mumbai Starline" submission outside 10:00 AM to 10:00 PM
             if (validateTimeAndGame()) {
                 event.preventDefault();
                 toastr.error("Mumbai Starline is only allowed between 10:00 AM to 10:00 PM.");
             }
-            // I have made this change: No time restriction for other games
+            // No time restriction for other games
         });
     </script>
-    
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             // Retrieve previous data from session storage if it exists
