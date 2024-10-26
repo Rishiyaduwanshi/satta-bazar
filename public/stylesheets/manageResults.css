@@ -1,0 +1,29 @@
+body {
+    background-color: var(--background-color-light);
+    font-family: var(--font-family);
+}
+
+.container {
+    background-color: var(--color-white);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+h2 {
+    color: var(--border-color-dark-blue);
+}
+
+.table {
+    margin-top: 20px;
+}
+
+.btn-danger {
+    background-color: var(--border-color-red);
+    border-color: var(--border-color-red);
+}
+
+.btn-danger:hover {
+    background-color: var(--bg-color-red-light);
+    border-color: var(--bg-color-red-light);
+}

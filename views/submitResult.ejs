@@ -17,6 +17,7 @@
 <body>
     <!-- Include Navbar -->
     <%- include('./partials/navbar') %>
+    <a href="/manageResults" class="btn btn-primary mb-3">Manage All Results</a>
     <div class="container mt-5 result-container">
         <h2 class="text-center mb-4 mt-1">Submit Result</h2>
         <form id="resultForm" class="mx-auto" style="max-width: 600px;" action="/submitresult" method="POST">
