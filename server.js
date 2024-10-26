@@ -22,10 +22,7 @@ app.use(
     secret: process.env.SECRET_KEY,
     resave: false,
     saveUninitialized: false,
-    cookie: {
-      secure: process.env.PRO_MODE === "false" ? false : true,
-      maxAge: 1000 * 60 * 60 * 24,
-    },
+    cookie: { secure: false, maxAge: 1000 * 60 * 60 * 24 },
   })
 );
 app.use(flash());
@@ -332,6 +329,51 @@ app.get("/dailyResult", async (req, res) => {
       .send(`Internal server error ${require("./utils/errorCodes").c46}`);
   }
 });
+
+app.get("/manageResults", require("./auth/isLoginAuth"), async (req, res) => {
+  try {
+    const { game, date } = req.query;
+    let query = {};
+    
+    if (game) query.game = game;
+    if (date) {
+      const startDate = new Date(date);
+      const endDate = new Date(date);
+      endDate.setDate(endDate.getDate() + 1);
+      query.date = { $gte: startDate, $lt: endDate };
+    }
+
+    const games = await Result.distinct('game');
+    const results = await Result.find(query).sort({date: -1}).limit(100);
+    
+    res.render("manageResults", { 
+      games, 
+      results,
+      selectedGame: game || '',
+      selectedDate: date || '',
+      moment: require('moment')
+    });
+  } catch (err) {
+    console.error("Error fetching results:", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+
+app.delete('/deleteResult/:id', require("./auth/isLoginAuth"), async (req, res) => {
+  try {
+    const resultId = req.params.id;
+    const deletedResult = await Result.findByIdAndDelete(resultId);
+    if (!deletedResult) {
+      return res.status(404).json({ message: 'Result not found' });
+    }
+    res.json({ message: 'Result deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting result:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 
 app.get("*", (req, res) => {
   res.status(404).render("404"); // Render the 404 page with a 404 status code
