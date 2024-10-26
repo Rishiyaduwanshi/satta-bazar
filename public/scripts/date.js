@@ -1,12 +1,3 @@
-let today = document.getElementById('today');
-const todayDate = new Date();
-
-
-today.innerText = todayDate.toDateString();
-
-const todayClass = document.querySelector(".today");
-todayClass.innerText = todayDate.toDateString();
-
 
 let old = document.getElementById('half-add-time');
 let timeInMilli = old.innerText;
