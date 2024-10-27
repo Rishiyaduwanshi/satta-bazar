@@ -69,8 +69,7 @@
     <div id="section">
         <div id="container">
             <h1 class="ads" style="padding:2px 0; margin:0; font-size: small">
-                <marquee behavior="" direction="" id="superfast-result">Superfast Result of all satta <span
-                        id="today">xbcxbcknjcnx</span> </marquee>
+                <marquee behavior="" direction="" id="superfast-result">Superfast Result of all satta <span id="today"><%= todayDate.toDateString() %> </span></marquee>
                 Daily Superfast Satta Bazar Result of <%=`${currentMonth} ${year}`%> And Leak Numbers for Gali, Desawar,
                 Mumbai Starline, Delhi Bazar,Shree Ganesh ,Ghaziabad and
                 Faridabad With
@@ -84,7 +83,7 @@
                 <table class="quick-result-board">
                     <tr class="board-title">
                         <th colspan="3">
-                            <h1>Satta Bazar Starline Results of <span class="today"><%= data.date.toDateString() %></span></h1>
+                            <h1>Satta Bazar Starline Results of <%= data.date.toDateString() %></h1>
                         </th>
                     </tr>
                     <tr class="board-head">
