@@ -114,7 +114,7 @@
                         </td>
                         <td class="yesterday-number">
                             <h3>
-                                <%=data.result %>
+                                <%=data.result.toString().padStart(2,'0') %>
                             </h3>
                         </td>
                         <td class="today-number display-none-on10:30">
@@ -159,7 +159,7 @@
                         <h3 class="game-name">
                             <%= gameResult._id %>
                         </h3> <!-- Game Name -->
-                        <h3 class="game-link"><%=gameResult.results[0].date.toLocaleTimeString('en-US',{
+                        <h3 class="game-link">At<%=gameResult.results[0].date.toLocaleTimeString('en-US',{
                             hour: '2-digit',
                             minute: '2-digit',
                             hour12: true
