@@ -1,4 +1,6 @@
 User-agent: *
 Disallow: /signin
 Disallow: /signup
+Disallow: /manageResults
+Disallow: /submitResult
 Disallow: /*.log$
