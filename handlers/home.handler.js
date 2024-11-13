@@ -1,4 +1,5 @@
 const Result = require("../models/resultSchema");
+const excludedGames = require("../data/multipleResultsInSameDay");
 
 module.exports = {
 
@@ -50,7 +51,7 @@ module.exports = {
           const latestResults = await Result.aggregate([
             {
               $match: {
-                game: { $ne: "Mumbai Starline" }, // Exclude "Mumbai Starline"
+                game: { $nin: excludedGames }, // Exclude all games from excludedGames
                 date: { $gte: oneDayBefore }, // Only fetch results for today and yesterday
               },
             },
@@ -96,7 +97,7 @@ module.exports = {
           const monthlyResults = await Result.aggregate([
             {
               $match: {
-                game: { $ne: "Mumbai Starline" }, // Exclude Mumbai Starline
+                game: { $nin: excludedGames }, // Exclude all games from excludedGames
                 date: { $gte: startOfMonth, $lte: todayDate }, // Only consider data from start of the month to end
               },
             },
