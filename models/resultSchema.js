@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 
+const connect = require("../dbConnection");
+
 const resultSchema = new mongoose.Schema(
   {
     game: {
@@ -17,5 +19,5 @@ const resultSchema = new mongoose.Schema(
   }
 );
 
-const Result = mongoose.model("results", resultSchema);
+const Result = connect.sattaStarlineDB.model("results", resultSchema);
 module.exports = Result;

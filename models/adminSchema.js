@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require('bcrypt')
+const connect = require("../dbConnection");
 
 const adminSchema = new mongoose.Schema(
   {
@@ -47,4 +48,4 @@ adminSchema.methods.comparePassword = async function (candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
 };
 
-module.exports = mongoose.model("Admins", adminSchema);
+module.exports = connect.sattaFastDB.model("Admins", adminSchema);
