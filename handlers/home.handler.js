@@ -4,15 +4,15 @@ module.exports = {
 
     handleHomeRoute : async (req, res) => {
         try {
-          // Fetch the latest result for "Mumbai Starline"
-          var resultWithMumbai =
-            (await Result.findOne({ game: "Mumbai Starline" }, { _id: 0 }).sort({
+          // Fetch the latest result for "Super Faridabad"
+          var resultWithSuperFastFaridabad =
+            (await Result.findOne({ game: "Super Faridabad" }, { _id: 0 }).sort({
               date: -1,
             })) || {};
       
-          if (!resultWithMumbai || !resultWithMumbai.date) {
+          if (!resultWithSuperFastFaridabad || !resultWithSuperFastFaridabad.date) {
             // Handle the case when no result is found
-            console.log("No results found for Mumbai Starline.");
+            console.log("No results found for Super Faridabad.");
             return res.render("index", {
               data: {},
               time: "N/A",
@@ -22,9 +22,9 @@ module.exports = {
           }
       
           // Format the time for the latest result
-          const time = resultWithMumbai.date.toLocaleTimeString().split(":");
+          const time = resultWithSuperFastFaridabad.date.toLocaleTimeString().split(":");
           const updatedTime = `${time[0]}:${time[1]}${time[2].split("00").join(" ")}`;
-          const timeInMilli = new Date(resultWithMumbai.date).getTime();
+          const timeInMilli = new Date(resultWithSuperFastFaridabad.date).getTime();
       
           // Set today's date and start of the month at the top
           const todayDate = new Date();
@@ -35,7 +35,7 @@ module.exports = {
           );
       
           const todayResults = await Result.find({
-            game: "Mumbai Starline",
+            game: "Super Faridabad",
             date: { $gte: startDate },
           }).sort({ date: 1 });
       
@@ -50,7 +50,7 @@ module.exports = {
           const latestResults = await Result.aggregate([
             {
               $match: {
-                game: { $ne: "Mumbai Starline" }, // Exclude "Mumbai Starline"
+                game: { $ne: "Super Faridabad" }, // Exclude "Super Faridabad"
                 date: { $gte: oneDayBefore }, // Only fetch results for today and yesterday
               },
             },
@@ -96,7 +96,7 @@ module.exports = {
           const monthlyResults = await Result.aggregate([
             {
               $match: {
-                game: { $ne: "Mumbai Starline" }, // Exclude Mumbai Starline
+                game: { $ne: "Super Faridabad" }, // Exclude Super Faridabad
                 date: { $gte: startOfMonth, $lte: todayDate }, // Only consider data from start of the month to end
               },
             },
@@ -117,10 +117,11 @@ module.exports = {
           ]);
       
           // ***********************Monthly result for index END*************************************
+
       
           // Render the EJS template, passing the data for the latest result and today's results
           res.render("index", {
-            data: resultWithMumbai,
+            data: resultWithSuperFastFaridabad,
             time: updatedTime,
             timeInMilli,
             todayResults: formattedResults, // Pass today's sorted results

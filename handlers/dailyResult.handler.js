@@ -15,16 +15,18 @@ const dailyResult = async (req, res) => {
       const endOfDayUTC = new Date(d.setHours(23, 59, 59, 999)); // End at 23:59:59
 
       const fetchResult = await Result.find({
-        game: "Mumbai Starline",
+        game: "Super Faridabad",
         date: { $gte: startOfDayUTC, $lte: endOfDayUTC },
       }).sort({ date: 1 });
 
       const todayDate = d.toDateString();
+      console.log(todayDate);
+      
 
       res.render("dailyResult", {
         data: gameList,
         fetchResult,
-        todayDate,
+        todayDate : new Date().toISOString().substring(0, 10),
       });
     }
   } catch (err) {

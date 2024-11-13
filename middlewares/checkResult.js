@@ -6,16 +6,16 @@ async function checkResult(req, res, next) {
         // Combine date and time to create a Date object
         const dateObject = new Date(`${date}T${time}:00`); // Assuming time format is "HH:mm"
         
-        // Check if the game is Mumbai Starline
-        if (game === "Mumbai Starline") {
-            // Check for Mumbai Starline with exact date and time
+        // Check if the game is Super Faridabad
+        if (game === "Super Faridabad") {
+            // Check for Super Faridabad with exact date and time
             const existingResult = await resultSchema.findOne({
-                game: "Mumbai Starline",
+                game: "Super Faridabad",
                 date: dateObject // Check with exact date and time
             });
 
             if (existingResult) {
-                req.flash("error", `Result for Mumbai Starline already exists on ${date} and ${time}.`);
+                req.flash("error", `Result for Super Faridabad already exists on ${date} and ${time}.`);
                 return res.redirect('/submitresult');
             }
         } else {

@@ -1,7 +1,7 @@
 const fs = require("fs");
 
 const generateData = (fileName, startDate, endDate) => {
-  const gameName = "Mumbai Starline";
+  const gameName = "Super Faridabad";
   const dataEntries = [];
 
   const start = new Date(startDate);
@@ -38,4 +38,4 @@ const generateData = (fileName, startDate, endDate) => {
 };
 
 // Generate data for a specific date
-generateData("mumbai_5yr.csv", "2019-01-01", "2023-12-31");
+generateData("superFaridabad_5yr.csv", "2019-01-01", "2023-12-31");

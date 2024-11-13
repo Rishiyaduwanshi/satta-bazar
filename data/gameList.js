@@ -1,5 +1,5 @@
 const gameList = [
-  "Mumbai Starline",
+  "Super Faridabad",
   "Delhi Bazar",
   "Shree Ganesh",
   "Faridabad",

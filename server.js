@@ -43,7 +43,7 @@ app.use('/', require('./routes/deleteResult.route'))
 //   try {
 //     const todayDate = new Date()
 //     const startDate = new Date(todayDate.getFullYear(),todayDate.getMonth(),todayDate.getDate())
-//     const results = await Result.find({game : "Mumbai Starline", date : {$gte : startDate}}).sort({date : 1});
+//     const results = await Result.find({game : "Super Faridabad", date : {$gte : startDate}}).sort({date : 1});
 //     const formattedResults = results.map(result => ({
 //       ...result._doc, // This contains the full document data
 //       date: result.date ? result.date.toLocaleString() : null

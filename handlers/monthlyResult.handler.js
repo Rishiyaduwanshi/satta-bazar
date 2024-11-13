@@ -14,7 +14,7 @@ const Result = require("../models/resultSchema");
       const monthlyGameResults = await Result.aggregate([
         {
           $match: {
-            game: { $ne: "Mumbai Starline" }, // Exclude Mumbai Starline
+            game: { $ne: "Super Faridabad" }, // Exclude Super Faridabad
             date: { $gte: startOfMonth, $lte: endOfMonth }, // Only consider data from start of the month to end
           },
         },
