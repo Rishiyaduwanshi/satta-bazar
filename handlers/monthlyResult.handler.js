@@ -1,5 +1,5 @@
 const Result = require("../models/resultSchema");
-
+const excludedGames = require("../data/multipleResultsInSameDay");
 
   const monthlyResult = (async (req, res) => {
     try {
@@ -14,7 +14,7 @@ const Result = require("../models/resultSchema");
       const monthlyGameResults = await Result.aggregate([
         {
           $match: {
-            game: { $ne: "Super Faridabad" }, // Exclude Super Faridabad
+            game: { $nin: excludedGames }, // Exclude all the results from the excluded games
             date: { $gte: startOfMonth, $lte: endOfMonth }, // Only consider data from start of the month to end
           },
         },
