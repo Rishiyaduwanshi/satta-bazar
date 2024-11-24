@@ -2,7 +2,7 @@
 let old = document.getElementById('half-add-time');
 let timeInMilli = old.innerText;
 
-const addedTimeInMilli = parseInt(timeInMilli) + 1800000;
+const addedTimeInMilli = parseInt(timeInMilli) + 2700000;
 const addedTimeInLocale = (new Date(addedTimeInMilli)).toLocaleTimeString();
 
 

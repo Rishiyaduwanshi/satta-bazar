@@ -1,7 +1,7 @@
 {
-  "name": "satta-bazar-starline",
+  "name": "satta-bazar-fast",
   "version": "1.0.0",
-  "description": "satta-bazar-starline",
+  "description": "satta-bazar-fast",
   "main": "server.js",
   "scripts": {
     "dev": "nodemon server.js",
