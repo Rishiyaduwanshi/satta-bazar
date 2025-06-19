@@ -40,20 +40,12 @@
 
 
 <body>
-<% const currentMonth = todayDate.toLocaleString('default', { month: 'long' });  %>
-<% const d = new Date() %>
-<% const year = d.getFullYear(); %>
-<% const month = (d.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-based %>
-<% const day = d.getDate().toString().padStart(2, '0'); %>
-<% const formattedDate = `${year}-${month}-${day}`; // Example output: "2024-10-08" %>
-<% const currentDate = new Date() %>
-<%# const thisMonth = todayDate.getMonth(); %>
-<%# const thisyear = todayDate.getFullYear(); %>
-<%# const thisday = todayDate.getDate(); %>
-<% const daysInMonth = new Date(year, month + 1, 0).getDate(); %> <!-- Last day of the current month -->
-<% const date = new Date() %>
-<% const todayString = date.toDateString() %>
-<% const today = date.toLocaleDateString() %>
+<% const month = (queryDate.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-based %>
+<% const day = queryDate.getDate().toString().padStart(2, '0'); %>
+<% const formattedDate = `${queryDate.getFullYear()}-${month}-${day}`; // Example output: "2024-10-08" %>
+
+
+
 <%- include('./partials/navbar') %>
         <div id="chart-form">
             <h2 id="chart-text">Yahan Aap Date,Month Aur Year Select Karke Super Faridabad ka daily ka Chart Dekh Sakte Hai.</h2>
@@ -65,29 +57,27 @@
         </div>
         <div id="starline-result" class="chart">
             <table class="chart-table">
-                <!-- Header Section -->
+                
                 <tr class="chart-head">
                     <td class="month" colspan="3">
-                        <h1> Monthly Satta-Bazar-Fast Result Chart of <%=todayDate %> for Super Faridabad</h1>
+                        <h1> Monthly Satta-Bazar-Fast Result Chart of <%=queryDate.toDateString() %> for Super Faridabad</h1>
                     </td>
                 </tr>
-                <!-- Table Header -->
                 <tr Class="date-name">
                     <td class="date">Time</td>
                     <th class="name">
                         <%= data[0] %>
-                    </th> <!-- gameName passed from server -->
+                    </th>
                 </tr>
           
-                <!-- Dynamic Rows for each result -->
                 <% fetchResult.forEach(function(results) { %>
                     <tr Class="day-number">
                         <td class="day">
                             <%= results.date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %>
-                        </td> <!-- Display time from each result -->
+                        </td> 
                         <td class="number">
                             <%= results.result.toString().padStart(2,'0') %>
-                        </td> <!-- Display number from each result -->
+                        </td> 
                     </tr>
                     <% }); %>
           

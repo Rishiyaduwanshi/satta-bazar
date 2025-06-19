@@ -362,16 +362,9 @@
                         <option value="12">December</option>
                     </select>
                     <select id="year" name="year">
-                        <option value="2024">2024</option>
-                        <option value="2023">2023</option>
-                        <option value="2022">2022</option>
-                        <option value="2021">2021</option>
-                        <option value="2020">2020</option>
-                        <option value="2019">2019</option>
-                        <option value="2018">2018</option>
-                        <option value="2017">2017</option>
-                        <option value="2016">2016</option>
-                        <option value="2015">2015</option>
+                        <% for(let i = year; i > 2015; i--){ %>
+                            <option value="<%= i %>"><%= i %></option>
+                        <% } %>
                     </select>
                     <input id="direct-chart" type="submit" value="Go">
                 </form>

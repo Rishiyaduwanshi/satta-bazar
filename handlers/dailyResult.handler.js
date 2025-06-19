@@ -19,12 +19,10 @@ const dailyResult = async (req, res) => {
         date: { $gte: startOfDayUTC, $lte: endOfDayUTC },
       }).sort({ date: 1 });
 
-      const todayDate = d.toDateString();      
-
       res.render("dailyResult", {
         data: gameList,
         fetchResult,
-        todayDate,
+        queryDate : d,
       });
     }
   } catch (err) {
