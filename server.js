@@ -1,6 +1,5 @@
 const express = require("express");
 const path = require("path");
-require("ejs");
 const app = express();
 const session = require("express-session");
 const flash = require("connect-flash");
@@ -8,9 +7,6 @@ const cookieParser = require("cookie-parser");
 require("dotenv").config();
 require("./dbConnection");
 app.set("view engine", "ejs");
-
-
-
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -27,8 +23,13 @@ app.use(
 );
 app.use(flash());
 
+global.cachedSettings = null;
+require("./utils/loadSetting")();
+
+
 
 // **********************Routes************************* 
+app.use('/', require('./routes/settings.route'))
 app.use('/', require('./routes/home.route'))
 app.use('/', require('./routes/signup.route'))
 app.use('/', require('./routes/signin.route'))

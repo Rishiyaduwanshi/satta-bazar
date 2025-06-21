@@ -41,14 +41,20 @@ module.exports = {
           }).sort({ date: 1 });
       
           /**************************************************Other games  START***************** */
+          let oneDayBefore;
+          let formattedResults;
+          let latestResults;
+          let monthlyResults;
+          if(global.cachedSettings.showMonthlyResult){
+
           const today = new Date();
-          const oneDayBefore = new Date(today);
+          oneDayBefore = new Date(today);
           oneDayBefore.setDate(today.getDate() - 1);
           // Set time to 00:00:00 to get the start of the day
           today.setHours(0, 0, 0, 0);
           oneDayBefore.setHours(0, 0, 0, 0);
       
-          const latestResults = await Result.aggregate([
+          latestResults = await Result.aggregate([
             {
               $match: {
                 game: { $nin: excludedGames }, // Exclude all the results from the excluded games
@@ -76,9 +82,11 @@ module.exports = {
               },
             },
           ]);
+          
+
           /**********************Other games END **************************** */
           // Format today's results for the table
-          const formattedResults = todayResults.map((result) => ({
+          formattedResults = todayResults.map((result) => ({
             time: result.date.toLocaleTimeString([], {
               hour: "2-digit",
               minute: "2-digit",
@@ -94,7 +102,7 @@ module.exports = {
             1
           );
           // Fetch monthly results
-          const monthlyResults = await Result.aggregate([
+          monthlyResults = await Result.aggregate([
             {
               $match: {
                 game: { $nin: excludedGames }, // Exclude all games from the excluded list
@@ -116,20 +124,21 @@ module.exports = {
               },
             },
           ]);
-      
+      }
           // ***********************Monthly result for index END*************************************
 
       
           // Render the EJS template, passing the data for the latest result and today's results
+          console.log(global.cachedSettings)
           res.render("index", {
             data: resultWithSuperFastFaridabad,
             time: updatedTime,
             timeInMilli,
-            todayResults: formattedResults, // Pass today's sorted results
-            otherGames: latestResults,
+            todayResults: global.cachedSettings.showMonthlyResult ? formattedResults : [], // Pass today's sorted results
+            otherGames: global.cachedSettings.showMonthlyResult ? latestResults : [],
             todayDate,
-            oneDayBefore,
-            monthlyResults,
+            oneDayBefore : global.cachedSettings.showMonthlyResult ? oneDayBefore : '' ,
+            monthlyResults : global.cachedSettings.showMonthlyResult ? monthlyResults : [],
           });
         } catch (err) {
           console.error("Error fetching results:", err);

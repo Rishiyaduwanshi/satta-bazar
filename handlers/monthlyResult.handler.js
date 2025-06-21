@@ -1,8 +1,10 @@
 const Result = require("../models/resultSchema");
+const Setting = require('../models/settingSchema')
 const excludedGames = require("../data/multipleResultsInSameDay");
 
   const monthlyResult = (async (req, res) => {
     try {
+      const showMonthlyResult = Setting.find({showMonthlyResult : true})
       const month = parseInt(req.query.month, 10); // Get the selected month
       const year = parseInt(req.query.year, 10); // Get the selected year
 
@@ -36,7 +38,9 @@ const excludedGames = require("../data/multipleResultsInSameDay");
 
       res.render("monthlyResult", {
         monthlyResults: monthlyGameResults,
+        // monthlyResults: [],
         todayDate: endOfMonth, // Optionally set todayDate to endOfMonth for display
+        // show : 
       });
     } catch (err) {
       console.error("Error fetching monthly results:", err);

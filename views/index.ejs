@@ -133,6 +133,7 @@
             <!-- ***************************************Mumbai starline main END********************* -->
 
 <!-- *******************************Other Games START******************************* -->
+ <% if(monthlyResults?.length >0){ %>
 <div class="main-content">
     <table class="quick-result-board">
         <tr class="board-title">
@@ -202,7 +203,7 @@
         </tr>
     </table>
 </div>
-
+ <% } %>
 
 <!-- *******************************Other Games END******************************* -->
             <!-- ***********************Mumbai starline result  START********************* -->
@@ -260,8 +261,8 @@
              
             
             <!-- ***************************Monthly Chart START*********************************** -->
-            
-            <div id="mix-chart" class="chart">
+            <% if(monthlyResults?.length >0){ %>
+                           <div id="mix-chart" class="chart">
                 <table class="chart-table">
                     <tr class="chart-head">
                         <td colspan="7" class="month">
@@ -306,11 +307,10 @@
                                     </tr>
                                     <% } %>
                 </table>
-            </div>
-    
+            </div> 
+             
 
-
-            <!-- *************************Monthly Chart END*********************************** -->
+                
 
             <div class="nav-link" title=" Satta Result Chart With Record">
                 <a href="/monthlyResult?month=<%=month%>&year=<%=year%>">
@@ -318,6 +318,11 @@
                         Ke Liye Yahan Click Kariye</h1>
                 </a>
             </div>
+
+            <% } %>
+
+            <!-- *************************Monthly Chart END*********************************** -->
+
         </div>
 
 
@@ -343,6 +348,7 @@
 
 
         <div id="footer">
+            <% if(monthlyResults?.length >0) { %>
             <div id="chart-form">
                 <h2 id="chart-text">Yahan Aap Month Aur Year Select Karke Gali, Desawar, Ghaziabad Aur Faridabad Ka
                     Combined Chart Dekh Sakte Hai.</h2>
@@ -369,6 +375,8 @@
                     <input id="direct-chart" type="submit" value="Go">
                 </form>
             </div>
+            <% } %>
+
             <a style="position:fixed; bottom:20px;right:8px;">&nbsp;<input
                     style="border:#e7aa26 1px solid; background:#FBC503; color:Red; height:auto; padding:8px; font-weight:bold;"
                     id="Refresh" name="Refresh" value="Refresh" type="submit"

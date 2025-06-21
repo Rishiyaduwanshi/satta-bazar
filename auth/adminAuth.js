@@ -41,7 +41,8 @@ const createToken = (payload, expiry, res) => {
   try {
     // Directly sign the token and set it as a cookie
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: expiry });
-    res.cookie('token', token, { httpOnly: true, secure: process.env.PRO_MODE === 'true', sameSite : 'strict' });
+    res.cookie('token', token, { httpOnly: true, secure: process.env.PRO_MODE === 'true', sameSite : 'strict', 'maxAge' : 15 * 60 * 100 });
+    res.cookie('isLoggedIn', true, { 'maxAge': 15 * 60 * 1000 })
     return token; // Return the token if needed
   } catch (error) {
     console.error("Could not tokenize: ", error);
