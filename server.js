@@ -18,7 +18,7 @@ app.use(
     secret: process.env.SECRET_KEY,
     resave: false,
     saveUninitialized: false,
-    cookie : { secure : false, maxAge : 1000*60*60*24}
+    cookie : { secure : process.env.PRO_MODE === 'true', maxAge : 1000*60*60*24}
   })
 );
 app.use(flash());

@@ -1,15 +1,14 @@
 <% const currentMonth = todayDate.toLocaleString('default', { month: 'long' });  %>
 <% const year = todayDate.getFullYear(); %> 
-<% const month = (todayDate.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-based %>
+<% const month = (todayDate.getMonth() + 1).toString().padStart(2, '0'); %>
 <% const day = todayDate.getDate().toString().padStart(2, '0'); %>
 <% const monthZeroIndex=todayDate.getMonth(); %>
 <% const daysInMonth=new Date(year, month + 1, 0).getDate(); %>
-<% const formattedDate = `${year}-${month}-${day}`; // Example output: "2024-10-08" %>
+<% const formattedDate = `${year}-${month}-${day}`;  %>
 
 <% 
-  // One day before
-  const oneDayBefore = new Date(todayDate); // Clone the current date
-  oneDayBefore.setDate(todayDate.getDate() - 1); // Set to one day before
+  const oneDayBefore = new Date(todayDate); 
+  oneDayBefore.setDate(todayDate.getDate() - 1);
   const yearOneDayBefore = oneDayBefore.getFullYear();
   const monthOneDayBefore = (oneDayBefore.getMonth() + 1).toString().padStart(2, '0');
   const monthOneDayBeforeString = oneDayBefore.getMonth()
@@ -18,9 +17,8 @@
 %>
 
 <% 
-  // Two days before
-  const twoDaysBefore = new Date(todayDate); // Clone the current date
-  twoDaysBefore.setDate(todayDate.getDate() - 2); // Set to two days before
+  const twoDaysBefore = new Date(todayDate);
+  twoDaysBefore.setDate(todayDate.getDate() - 2); 
   const yearTwoDaysBefore = twoDaysBefore.getFullYear();
   const monthTwoDaysBefore = (twoDaysBefore.getMonth() + 1).toString().padStart(2, '0');
   const monthTwoDaysBeforeString = twoDaysBefore.getMonth()
@@ -70,11 +68,12 @@
         <div id="container">
             <h1 class="ads" style="padding:2px 0; margin:0; font-size: small">
                 <marquee behavior="" direction="" id="superfast-result">Superfast Result of all satta <span id="today"><%= todayDate.toDateString() %> </span></marquee>
-                Daily Superfast Satta Bazar Result of <%=`${currentMonth} ${year}`%> And Leak Numbers for Gali, Desawar,
-                Super Faridabad, Delhi Bazar,Shree Ganesh ,Ghaziabad and
-                Faridabad With
-                Complete Old Satta Bazar Fast Chart of 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023,2024, 2025 From Satta
-                Bazar, Super Faridabad, Delhi Bazar, Shree Ganesh, Faridabad Ghaziabad,Gali and Desawar.
+                Daily Superfast Satta Bazar Result of <%=`${currentMonth} ${year}`%> And Leak Numbers for 
+                Super Faridabad With
+                Complete Old Satta Bazar Fast Chart of 
+                <% for(let i = 2015;  i< year; i++) { %>
+                 <%= `${i},`  %> 
+                <%  }  %> <%=year  %>
             </h1>
 
             <!-- ***************************************Mumbai starline main START********************* -->
