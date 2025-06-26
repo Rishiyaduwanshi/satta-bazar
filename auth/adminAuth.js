@@ -1,6 +1,6 @@
 const Admin = require("../models/adminSchema");
 const jwt = require('jsonwebtoken'); // Corrected the import
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 const signin = async (req,res,next) =>{
   try {

@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 
 const adminSchema = new mongoose.Schema(
   {
@@ -33,16 +33,14 @@ const adminSchema = new mongoose.Schema(
 );
 
 
-// Pre-save hook to hash the password if it has been modified
 adminSchema.pre("save", async function (next) {
   if (this.isModified("password")) {
-    const salt = await bcrypt.genSalt(10); // Generate a salt
-    this.password = await bcrypt.hash(this.password, salt); // Hash the password
+    const salt = await bcrypt.genSalt(10); 
+    this.password = await bcrypt.hash(this.password, salt);
   }
-  next(); // Proceed to save the admin
+  next(); 
 });
 
-// Optionally, you can create a method to compare passwords
 adminSchema.methods.comparePassword = async function (candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
 };

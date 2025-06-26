@@ -4,3 +4,4 @@ Disallow: /signup
 Disallow: /manageResults
 Disallow: /submitResult
 Disallow: /*.log$
+Disallow: /admin/*
