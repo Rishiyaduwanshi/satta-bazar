@@ -37,27 +37,8 @@ app.use('/', require('./routes/manageResults.route'))
 app.use('/', require('./routes/deleteResult.route'))
 
 
-// app.get("/api/results", async (req, res) => {
-//   try {
-//     const todayDate = new Date()
-//     const startDate = new Date(todayDate.getFullYear(),todayDate.getMonth(),todayDate.getDate())
-//     const results = await Result.find({game : "Mumbai Starline", date : {$gte : startDate}}).sort({date : 1});
-//     const formattedResults = results.map(result => ({
-//       ...result._doc, // This contains the full document data
-//       date: result.date ? result.date.toLocaleString() : null
-//     }));
-
-//     res.status(201).json(formattedResults);
-//   } catch (err) {
-//     res.status(501).json({ Error: err, message: "Unable to retrive data" });
-//   }
-// });
-
-// const date = '2024-11-31'
-
-
-app.get("*", (req, res) => {
-  res.status(404).render("404"); // Render the 404 page with a 404 status code
+app.all("/*splat", (req, res) => {
+  res.status(404).render("404"); 
 });
 
 console.log(`Timezone: ${process.env.TZ}`);
