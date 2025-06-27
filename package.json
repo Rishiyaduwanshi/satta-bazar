@@ -18,17 +18,17 @@
   "author": "Abhinav Prakash",
   "license": "ISC",
   "dependencies": {
-    "axios": "^1.7.7",
+    "axios": "^1.10.0",
     "bcryptjs": "^3.0.2",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.7",
-    "dotenv": "^16.4.5",
-    "ejs": "^3.1.9",
-    "express": "^4.19.2",
-    "express-session": "^1.18.0",
+    "dotenv": "^16.6.1",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-session": "^1.18.1",
     "jsonwebtoken": "^9.0.2",
     "moment": "^2.30.1",
-    "mongoose": "^8.3.0",
+    "mongoose": "^8.16.1",
     "toastr": "^2.1.4"
   }
 }
