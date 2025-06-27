@@ -77,51 +77,44 @@
                 Bazar Mumbai Starline Delhi Bazar, Shree Ganesh, Faridabad Ghaziabad,Gali and Desawar.
             </h1>
 
-            <!-- ***************************************Mumbai starline main START********************* -->
             <div class="main-content">
+            <!-- *************************************** Interval Slot START ********************* -->
+        <% demo.forEach(d => { 
+            const resultTime = new Date(d.date);
+            const nextResultTime = new Date(d.date);
+            nextResultTime.setMinutes(nextResultTime.getMinutes() + (d?.intervalSlot?.everyMinutes || 0));
+        %>
+        <table class="quick-result-board">
+            <tr class="board-title">
+            <th colspan="3">
+                <h1>Satta Bazar Starline Results of <%= `${d.name} ${d.date.toDateString()}` %></h1>
+            </th>
+            </tr>
+            <tr class="board-head">
+            <th class="games-name"><h2>Game</h2></th>
+            <th class="yesterday-date">
+                <h2><%= resultTime.toLocaleString("default", { hour: "2-digit", minute: "2-digit", hour12: true }).toUpperCase() %></h2>
+            </th>
+            <th class="today-date">
+                <h2><%= nextResultTime.toLocaleString("default", { hour: "2-digit", minute: "2-digit", hour12: true }).toUpperCase() %>
+                </h2>
+            </th>
+            </tr>
+            <tr class='game-result highlight' id='GD'>
+            <td class="game-details">
+                <h3 class="game-name"><%= d.name %></h3>
+                <h3 class="game-time">Next Result in <%= d?.intervalSlot?.everyMinutes || "" %> min</h3>
+                <h3 class="game-link">
+                <a href="/dailyresult?date=<%= formattedDate %>">Record Chart</a>
+                </h3>
+            </td>
+            <td class="yesterday-number"><h3><%= d.result %></h3></td>
+            <td class="today-number"><h3>XX</h3></td>
+            </tr>
+        </table>
+        <% }); %>
 
-                <table class="quick-result-board">
-                    <tr class="board-title">
-                        <th colspan="3">
-                            <h1>Satta Bazar Starline Results of <%= data.date.toDateString() %></h1>
-                        </th>
-                    </tr>
-                    <tr class="board-head">
-                        <th class="games-name">
-                            <h2>Game</h2>
-                        </th>
-                        <th class="yesterday-date">
-                            <h2 id="mumbai-time">
-                                <%=time %>
-                            </h2>
-                        </th>
-                        <th class="today-date display-none-on10:30">
-                            <h2 id="half-add-time">
-                                <%= timeInMilli %>
-                            </h2>
-                        </th>
-                    </tr>
-
-                    <tr class='game-result highlight' id='GD'>
-                        <td class="game-details">
-                            <h3 class="game-name">
-                                <%=data.game %>
-                            </h3>
-                            <h3 class="game-time"> Next Result in 30 min</h3>
-                            <h3 class="game-link"><a
-                                    href="/dailyresult?date=<%=formattedDate  %>">Record
-                                    Chart</a></h3>
-                        </td>
-                        <td class="yesterday-number">
-                            <h3>
-                                <%=data.result.toString().padStart(2,'0') %>
-                            </h3>
-                        </td>
-                        <td class="today-number display-none-on10:30">
-                            <h3>XX</h3>
-                        </td>
-                    </tr>
-                </table>
+        <!-- *************************************** Interval Slot END ********************* -->
                 <p>
                     ⬆️⬆️⬆️ <br>
                     यह गेम 09:30AM बजे दिन से 10:00PM तक हर (30 min) आधे घंटे में खुलती है | जरूरी सूचना
@@ -130,7 +123,6 @@
                 </p>
 
             </div>
-            <!-- ***************************************Mumbai starline main END********************* -->
 
 <!-- *******************************Other Games START******************************* -->
 <div class="main-content">
@@ -186,7 +178,7 @@
                         <% if (todayResult) { %>
                             <h3>
                                 <%= todayResult.result.toString().padStart(2, '0') %>
-                            </h3> <!-- Today's result -->
+                            </h3>
                         <% } else { %>
                             <h3>XX</h3>
                         <% } %>
@@ -205,60 +197,7 @@
 
 
 <!-- *******************************Other Games END******************************* -->
-            <!-- ***********************Mumbai starline result  START********************* -->
-            <div id="starline-result" class="chart">
-                <table class="chart-table">
-                    <!-- Header Section -->
-                    <tr class="chart-head">
-                        <td class="month" colspan="3">
-                            <h1> Monthly Satta-Bazar-Starline Result Chart of <%=todayDate.toDateString() %> for Mumbai Starline</h1>
-                        </td>
-                    </tr>
 
-                    <!-- Table Header -->
-                    <tr Class="date-name">
-                        <td class="date" title="Days in October 2024 ">Time</td>
-                        <th class="name">
-                            <%= data.game %>
-                        </th> <!-- gameName passed from server -->
-                    </tr>
-
-                    <!-- Dynamic Rows for each result -->
-                    <% todayResults.forEach(function(results) { %>
-                        <tr Class="day-number">
-                            <td class="day">
-                                <%= results.time %>
-                            </td> <!-- Display time from each result -->
-                            <td class="number">
-                                <%= results.result.toString().padStart(2,'0') %>
-                            </td> <!-- Display number from each result -->
-                        </tr>
-                        <% }); %>
-
-                            <!-- Some space between rows -->
-                            <tr class="space">
-                                <td></td>
-                            </tr>
-
-                            <!-- Options for previous/next months -->
-                            <tr class="option">
-                                <td class="e-link">
-                                    <a href='/dailyresult?date=<%=formattedDateOneDayBefore%>' >
-                                        <h1 class="aero">Click for <%= dayOneDayBefore+" "+oneDayBefore.toDateString().substring(4,7)  %></h1>
-                                    </a>
-                                </td>
-
-                                <td class="e-link">
-                                    <a href="/dailyresult?date=<%=formattedDateTwoDaysBefore  %>">
-                                        <h1 class="aero">Click for <%=dayTwoDaysBefore+" "+twoDaysBefore.toDateString().substring(4,7) %></h1>
-                                    </a>
-                                </td>
-                            </tr>
-                </table>
-            </div>
-            <!-- *********************Mumbai starline result  END********************** -->    
-             
-            
             <!-- ***************************Monthly Chart START*********************************** -->
             
             <div id="mix-chart" class="chart">
@@ -384,7 +323,6 @@
 
 
         <%-include('./partials/footer') %>
-        <script src="/scripts/date.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
         <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
 

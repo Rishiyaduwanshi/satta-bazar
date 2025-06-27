@@ -17,5 +17,7 @@ const resultSchema = new mongoose.Schema(
   }
 );
 
+ resultSchema.index({game : 1, date : -1})
+
 const Result = mongoose.model("results", resultSchema);
 module.exports = Result;
