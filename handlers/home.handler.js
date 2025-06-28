@@ -150,11 +150,8 @@ module.exports = {
           ]);
       
           // ***********************Monthly result for index END*************************************
-      
           res.render("index", {
             data: resultWithMumbai,
-            // time: updatedTime,
-            // timeInMilli,
             todayResults: formattedResults, 
             otherGames: latestResults,
             todayDate,

@@ -1,15 +1,14 @@
 <% const currentMonth = todayDate.toLocaleString('default', { month: 'long' });  %>
 <% const year = todayDate.getFullYear(); %> 
-<% const month = (todayDate.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-based %>
+<% const month = (todayDate.getMonth() + 1).toString().padStart(2, '0');  %>
 <% const day = todayDate.getDate().toString().padStart(2, '0'); %>
 <% const monthZeroIndex=todayDate.getMonth(); %>
 <% const daysInMonth=new Date(year, month + 1, 0).getDate(); %>
-<% const formattedDate = `${year}-${month}-${day}`; // Example output: "2024-10-08" %>
+<% const formattedDate = `${year}-${month}-${day}`; %>
 
 <% 
-  // One day before
-  const oneDayBefore = new Date(todayDate); // Clone the current date
-  oneDayBefore.setDate(todayDate.getDate() - 1); // Set to one day before
+  const oneDayBefore = new Date(todayDate); 
+  oneDayBefore.setDate(todayDate.getDate() - 1); 
   const yearOneDayBefore = oneDayBefore.getFullYear();
   const monthOneDayBefore = (oneDayBefore.getMonth() + 1).toString().padStart(2, '0');
   const monthOneDayBeforeString = oneDayBefore.getMonth()
@@ -18,9 +17,8 @@
 %>
 
 <% 
-  // Two days before
-  const twoDaysBefore = new Date(todayDate); // Clone the current date
-  twoDaysBefore.setDate(todayDate.getDate() - 2); // Set to two days before
+  const twoDaysBefore = new Date(todayDate); 
+  twoDaysBefore.setDate(todayDate.getDate() - 2); 
   const yearTwoDaysBefore = twoDaysBefore.getFullYear();
   const monthTwoDaysBefore = (twoDaysBefore.getMonth() + 1).toString().padStart(2, '0');
   const monthTwoDaysBeforeString = twoDaysBefore.getMonth()
@@ -79,17 +77,17 @@
 
             <div class="main-content">
             <!-- *************************************** Interval Slot START ********************* -->
+        <table class="quick-result-board">
+            <tr class="board-title">
+            <th colspan="3">
+                <h1>Satta Bazar Starline Results of <%= `${demo[0].date.toDateString()}` %></h1>
+            </th>
+            </tr>
         <% demo.forEach(d => { 
             const resultTime = new Date(d.date);
             const nextResultTime = new Date(d.date);
             nextResultTime.setMinutes(nextResultTime.getMinutes() + (d?.intervalSlot?.everyMinutes || 0));
         %>
-        <table class="quick-result-board">
-            <tr class="board-title">
-            <th colspan="3">
-                <h1>Satta Bazar Starline Results of <%= `${d.name} ${d.date.toDateString()}` %></h1>
-            </th>
-            </tr>
             <tr class="board-head">
             <th class="games-name"><h2>Game</h2></th>
             <th class="yesterday-date">
@@ -105,14 +103,14 @@
                 <h3 class="game-name"><%= d.name %></h3>
                 <h3 class="game-time">Next Result in <%= d?.intervalSlot?.everyMinutes || "" %> min</h3>
                 <h3 class="game-link">
-                <a href="/dailyresult?date=<%= formattedDate %>">Record Chart</a>
+                <a href="/dailyresult?game=<%= d.name %>&date=<%= formattedDate %>">Record Chart</a>
                 </h3>
             </td>
-            <td class="yesterday-number"><h3><%= d.result %></h3></td>
+            <td class="yesterday-number"><h3><%= d.result.toString().padStart(2,0) %></h3></td>
             <td class="today-number"><h3>XX</h3></td>
             </tr>
-        </table>
         <% }); %>
+        </table>
 
         <!-- *************************************** Interval Slot END ********************* -->
                 <p>

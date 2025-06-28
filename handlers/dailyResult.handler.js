@@ -1,32 +1,57 @@
+const { dailyResultSchema } = require("../utils/validation");
 const Result = require("../models/resultSchema");
-const gameList = require("../data/gameList");
+const intervalSlotGames = require("../data/games")
+  .filter(g => g.frequency === "interval-slot")
+  .map(g => g.name);
 
 const dailyResult = async (req, res) => {
-  const { date } = req.query;
+  let { date, game } = req.query;
+
+  const parseResult = dailyResultSchema.safeParse({ date, game });
+
+  if (!parseResult.success) {
+    req.flash("error", parseResult.error.errors[0].message);
+    return res.redirect("/dailyResult");
+  }
+
+  game = game.split("?")[0];
+
+if (!intervalSlotGames.includes(game)) {
+  req.flash("error", "Please select a valid game");
+  return res.render("dailyResult", {
+    game: "",
+    fetchResult: [],
+    todayDate: new Date().toDateString(),
+    messages: req.flash(),
+  });
+}
+
+
   try {
-    if (typeof date == "undefined") {
-      res.redirect(
-        `/dailyResult/?date=${new Date().toISOString().substring(0, 10)}`
+    if (!date) {
+      return res.redirect(
+        `/dailyResult?game=${game}&date=${new Date().toISOString().substring(0, 10)}`
       );
     }
-    if (typeof date === "string") {
-      const d = new Date(date);
-      const startOfDayUTC = new Date(d.setHours(0, 0, 0, 0)); // Start at 00:00:00
-      const endOfDayUTC = new Date(d.setHours(23, 59, 59, 999)); // End at 23:59:59
 
-      const fetchResult = await Result.find({
-        game: "Mumbai Starline",
-        date: { $gte: startOfDayUTC, $lte: endOfDayUTC },
-      }).sort({ date: 1 });
+    const d = new Date(date);
+    const startOfDayUTC = new Date(d.setHours(0, 0, 0, 0));
+    const endOfDayUTC = new Date(d.setHours(23, 59, 59, 999));
 
-      const todayDate = d.toDateString();
+    const fetchResult = await Result.find({
+      game,
+      date: { $gte: startOfDayUTC, $lte: endOfDayUTC },
+    }).sort({ date: -1 })
 
-      res.render("dailyResult", {
-        data: gameList,
-        fetchResult,
-        todayDate,
-      });
-    }
+    const todayDate = d.toDateString();
+
+    res.render("dailyResult", {
+      game,
+      fetchResult: fetchResult || [],
+      todayDate,
+      intervalSlotGames,
+      messages: req.flash()
+    });
   } catch (err) {
     console.error("Error fetching result:", err);
     res
