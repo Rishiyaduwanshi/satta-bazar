@@ -1,33 +1,29 @@
 const resultSchema = require("../models/resultSchema");
+const intervalSlotGames = require("../data/games").filter(g=>g.frequency === 'interval-slot').map(g=>g.name)
 
 async function checkResult(req, res, next) {
     try {
         const { game, date, time } = req.body;
-        // Combine date and time to create a Date object
-        const dateObject = new Date(`${date}T${time}:00`); // Assuming time format is "HH:mm"
+        const dateObject = new Date(`${date}T${time}:00`); 
         
-        // Check if the game is Mumbai Starline
-        if (game === "Mumbai Starline") {
-            // Check for Mumbai Starline with exact date and time
+        if (intervalSlotGames.includes(game)) {
             const existingResult = await resultSchema.findOne({
-                game: "Mumbai Starline",
-                date: dateObject // Check with exact date and time
-            });
-
+                game: game,
+                date: dateObject 
+            },{_id : 1});
             if (existingResult) {
-                req.flash("error", `Result for Mumbai Starline already exists on ${date} and ${time}.`);
+                req.flash("error", `Result for ${game} already exists on ${date} and ${time}.`);
                 return res.redirect('/submitresult');
             }
         } else {
-            // For other games, check if a result exists for the same date (ignore time)
             const startOfDay = new Date(date);
-            startOfDay.setHours(0, 0, 0, 0); // Start of the day
+            startOfDay.setHours(0, 0, 0, 0); 
             const endOfDay = new Date(date);
-            endOfDay.setHours(23, 59, 59, 999); // End of the day
+            endOfDay.setHours(23, 59, 59, 999);
 
             const existingResult = await resultSchema.findOne({
-                game: game, // Check for the same game
-                date: { $gte: startOfDay, $lte: endOfDay } // Check only for the same date
+                game: game, 
+                date: { $gte: startOfDay, $lte: endOfDay }
             });
 
             if (existingResult) {
@@ -36,7 +32,6 @@ async function checkResult(req, res, next) {
             }
         }
 
-        // If no conflicts found, proceed to the next middleware
         next();
         
     } catch (error) {
