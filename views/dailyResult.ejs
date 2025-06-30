@@ -28,7 +28,6 @@
 }) %>
 
 <body>
-<% const formattedDate = new Date().toISOString().substring(0, 10); %>
 <%- include('./partials/navbar') %>
 
 <div class="container my-4">
@@ -41,7 +40,7 @@
       <form action="/dailyResult" method="GET" class="row g-3 justify-content-center">
         <div class="col-md-4">
           <label for="date" class="form-label">Choose Date</label>
-          <input type="date" class="form-control" id="date" name="date" value="<%= formattedDate %>">
+          <input type="date" class="form-control" id="date" name="date">
         </div>
 
         <div class="col-md-8">
@@ -96,6 +95,7 @@
 <%- include('./partials/footer') %>
 
 <script>
+  const date = document.getElementById("date").value = new URLSearchParams(window.location.search).get('date');
   <% if (messages.error && messages.error.length > 0) { %>
     <% messages.error.forEach(function(msg) { %>
       toastr.error("<%= msg %>");

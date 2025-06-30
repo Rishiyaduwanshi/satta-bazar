@@ -33,7 +33,6 @@
         '/stylesheets/index.css'
     ],
     internalCSS: `
-        @import url('https://fonts.googleapis.com/css2?family=Sixtyfour+Convergence&display=swap');
         #logo-font {
             font-weight: 900;
             color: black;
@@ -299,16 +298,6 @@
                         <option value="12">December</option>
                     </select>
                     <select id="year" name="year">
-                        <option value="2024">2024</option>
-                        <option value="2023">2023</option>
-                        <option value="2022">2022</option>
-                        <option value="2021">2021</option>
-                        <option value="2020">2020</option>
-                        <option value="2019">2019</option>
-                        <option value="2018">2018</option>
-                        <option value="2017">2017</option>
-                        <option value="2016">2016</option>
-                        <option value="2015">2015</option>
                     </select>
                     <input id="direct-chart" type="submit" value="Go">
                 </form>
@@ -323,6 +312,16 @@
         <%-include('./partials/footer') %>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
         <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+        <script>
+            let yearOptions = "";
+            for(let i = 2015; i<=parseInt(new Date().getFullYear()); i++){
+                yearOptions+= `<option value="${i}">${i}</option>`
+            }
+            document.getElementById("year").innerHTML = yearOptions;
+            document.getElementById("year").value = new Date().getFullYear();
+            let currentMonth = String(new Date().getMonth() + 1).padStart(2, '0');
+            document.getElementById("month").value = currentMonth;
+        </script>
 
 </body>
 </html>

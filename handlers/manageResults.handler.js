@@ -1,5 +1,5 @@
 const Result = require("../models/resultSchema");
-const games = require('../data/gameList');
+const games = require('../data/games').map(g => g.name);
 
 const manageResults = async (req, res) => {
   try {
