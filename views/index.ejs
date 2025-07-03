@@ -79,20 +79,20 @@
         <table class="quick-result-board">
             <tr class="board-title">
             <th colspan="3">
-                <h1>Satta Bazar Starline Results of <%= `${demo[0].date.toDateString()}` %></h1>
+                <h1>Satta Bazar Starline Results of <%= `${intervalResults[0].date.toDateString()}` %></h1>
             </th>
             </tr>
-        <% demo.forEach(d => { 
+        <% intervalResults?.forEach(d => { 
             const resultTime = new Date(d.date);
             const nextResultTime = new Date(d.date);
             nextResultTime.setMinutes(nextResultTime.getMinutes() + (d?.intervalSlot?.everyMinutes || 0));
         %>
             <tr class="board-head">
             <th class="games-name"><h2>Game</h2></th>
-            <th class="yesterday-date">
+            <th class="yesterday-date" id="prevTime<%=d.id  %>">
                 <h2><%= resultTime.toLocaleString("default", { hour: "2-digit", minute: "2-digit", hour12: true }).toUpperCase() %></h2>
             </th>
-            <th class="today-date">
+            <th class="today-date" id="nxtTime<%=d.id  %>">
                 <h2><%= nextResultTime.toLocaleString("default", { hour: "2-digit", minute: "2-digit", hour12: true }).toUpperCase() %>
                 </h2>
             </th>
@@ -105,8 +105,8 @@
                 <a href="/dailyresult?game=<%= d.name %>&date=<%= formattedDate %>">Record Chart</a>
                 </h3>
             </td>
-            <td class="yesterday-number"><h3><%= d.result.toString().padStart(2,0) %></h3></td>
-            <td class="today-number"><h3>XX</h3></td>
+            <td class="yesterday-number" id="prevRes<%=d.id  %>"><h3><%= d.result.toString().padStart(2,0) %></h3></td>
+            <td class="today-number" id="nxtRes<%=d.id  %>"><h3>XX</h3></td>
             </tr>
         <% }); %>
         </table>
@@ -323,5 +323,40 @@
             document.getElementById("month").value = currentMonth;
         </script>
 
+        <script>
+            function parseTimeTo24Hr(timeStr) {
+                const [time, period] = timeStr.trim().split(" ");
+                let [hours, minutes] = time.split(":").map(Number);
+                if (period === "PM" && hours !== 12) hours += 12;
+                if (period === "AM" && hours === 12) hours = 0;
+            return { hours, minutes };
+            }
+
+            function isAfter10PM(timeStr) {
+                const { hours, minutes } = parseTimeTo24Hr(timeStr);
+                return hours > 22 || (hours === 22 && minutes > 0);
+            }
+
+            document.addEventListener("DOMContentLoaded", function () {
+                const allTimeHeaders = document.querySelectorAll("[id^='nxtTime']");
+
+                allTimeHeaders.forEach(header => {
+                    const idNum = header.id.replace("nxtTime", "");
+                    const resCell = document.getElementById(`nxtRes${idNum}`);
+                    const timeText = header.textContent.trim();
+
+                    if (isAfter10PM(timeText)) {
+                        header.remove();
+                        resCell?.remove();
+
+                        const prevTime = document.getElementById(`prevTime${idNum}`);
+                        const prevRes = document.getElementById(`prevRes${idNum}`);
+                        if (prevTime) prevTime.setAttribute("colspan", "2");
+                        if (prevRes) prevRes.setAttribute("colspan", "2");
+                    }
+                });
+            });
+
+        </script>
 </body>
 </html>

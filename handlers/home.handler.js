@@ -10,7 +10,7 @@ async function fetchTopResultPerGame() {
 
 
     const results = await Result.aggregate([
-      { $match: { game: { $in: intervalSlotGames } } },
+      { $match: { game: { $in: intervalSlotGames }, date : {$lte : new Date() } } } ,
       { $sort: { game: 1, date: -1 } },
       {
         $group: {
@@ -157,7 +157,7 @@ module.exports = {
             todayDate,
             oneDayBefore,
             monthlyResults,
-            demo : await fetchTopResultPerGame()
+            intervalResults : await fetchTopResultPerGame()
           });
         } catch (err) {
           console.error("Error fetching results:", err);

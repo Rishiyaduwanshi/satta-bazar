@@ -36,7 +36,7 @@ if (!intervalSlotGames.includes(game)) {
 
     const d = new Date(date);
     const startOfDayUTC = new Date(d.setHours(0, 0, 0, 0));
-    const endOfDayUTC = new Date(d.setHours(23, 59, 59, 999));
+    const endOfDayUTC = new Date();
 
     const fetchResult = await Result.find({
       game,
