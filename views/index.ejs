@@ -79,7 +79,7 @@
         <table class="quick-result-board">
             <tr class="board-title">
             <th colspan="3">
-                <h1>Satta Bazar Starline Results of <%= `${intervalResults[0].date.toDateString()}` %></h1>
+                <h1>Satta Bazar Starline Results</h1>
             </th>
             </tr>
         <% intervalResults?.forEach(d => { 
@@ -88,7 +88,7 @@
             nextResultTime.setMinutes(nextResultTime.getMinutes() + (d?.intervalSlot?.everyMinutes || 0));
         %>
             <tr class="board-head">
-            <th class="games-name"><h2>Game</h2></th>
+            <th class="games-name"><h2> <%=d.date.toDateString()  %> </h2>  </th>
             <th class="yesterday-date" id="prevTime<%=d.id  %>">
                 <h2><%= resultTime.toLocaleString("default", { hour: "2-digit", minute: "2-digit", hour12: true }).toUpperCase() %></h2>
             </th>
