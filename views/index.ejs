@@ -3,7 +3,6 @@
 <% const month = (todayDate.getMonth() + 1).toString().padStart(2, '0');  %>
 <% const day = todayDate.getDate().toString().padStart(2, '0'); %>
 <% const monthZeroIndex=todayDate.getMonth(); %>
-<% const daysInMonth=new Date(year, month + 1, 0).getDate(); %>
 <% const formattedDate = `${year}-${month}-${day}`; %>
 
 <% 
@@ -195,58 +194,54 @@
 
 <!-- *******************************Other Games END******************************* -->
 
-            <!-- ***************************Monthly Chart START*********************************** -->
-            
-            <div id="mix-chart" class="chart">
-                <table class="chart-table">
-                    <tr class="chart-head">
-                        <td colspan="7" class="month">
-                            <h1> Monthly Satta-Bazar-Starline Result Chart for <%= todayDate.toLocaleString('default', {
-                                    month: 'long' }) %>
-                                    <%= todayDate.getFullYear() %>
-                            </h1>
-                        </td>
-                    </tr>
-                    <tr class="date-name">
-                        <td class="date" title="Days in the current month">DATE</td>
-                        <% monthlyResults.forEach(game=> { %>
-                            <th class="name">
-                                <%= game._id %>
-                            </th> <!-- Game name -->
-                            <% }) %>
-                    </tr>
-    
-                    <!-- Get the number of days in the current month -->
-                                <!-- Last day of the current month -->
-                                <!-- Loop through each day of the month -->
-                <% for (let day=1; day <=daysInMonth; day++) { %>
-                                    <tr class="day-number">
-                                        <td class="day"
-                                            title="<%= todayDate.toLocaleString('default', { month: 'long' }) %> <%= day < 10 ? '0' + day : day %>, <%= year %>">
-                                            <%= day < 10 ? '0' + day : day %>
-                                        </td>
-    
-                                        <% monthlyResults.forEach(game=> {
-                                            // Find the result for the current day
-                                            let result = game.resultsByDay.find(r => {
-                                            const resultDate = new Date(r.date);
-                                            return resultDate.getDate() === day && resultDate.getMonth() === monthZeroIndex &&
-                                            resultDate.getFullYear() === year;
-                                            });
-                                        
-                                            %>
-                                            <td class="number">
-                                                <%= result ? result.result.toString().padStart(2,"0") : 'XX' %>
-                                            </td>
-                                            <% }) %>
-                                    </tr>
-                                    <% } %>
-                </table>
-            </div>
-    
+<!-- ***************************Monthly Chart START*********************************** -->
+<div id="mix-chart" class="chart">
+  <table class="chart-table">
 
+    <tr class="chart-head">
+      <td colspan="7" class="month">
+        <h1>
+          Monthly Satta-Bazar-Starline Result Chart for 
+          <%= currentMonth %> <%= year %>
+        </h1>
+      </td>
+    </tr>
 
-            <!-- *************************Monthly Chart END*********************************** -->
+    <tr class="date-name">
+      <td class="date" title="Days in the current month">DATE</td>
+      <% monthlyResults.forEach(game => { %>
+        <th class="name"><%= game._id %></th>
+      <% }) %>
+    </tr>
+
+    <% for (let d = 1; d <= todayDate.getDate(); d++) { 
+         const dayStr = d.toString().padStart(2, '0');
+    %>
+      <tr class="day-number">
+        <td class="day" title="<%= currentMonth %> <%= dayStr %>, <%= year %>">
+          <%= dayStr %>
+        </td>
+
+        <% monthlyResults.forEach(game => {
+             const result = game.resultsByDay.find(r => {
+               const resultDate = new Date(r.date);
+               return (
+                 resultDate.getDate() === d &&
+                 resultDate.getMonth() === monthZeroIndex &&
+                 resultDate.getFullYear() === year
+               );
+             });
+        %>
+          <td class="number" title="<%= result ? result.date : 'No Result' %>">
+            <%= result ? result.result.toString().padStart(2, '0') : 'XX' %>
+          </td>
+        <% }) %>
+      </tr>
+    <% } %>
+  </table>
+</div>
+
+<!-- *************************Monthly Chart END*********************************** -->
 
             <div class="nav-link" title=" Satta Result Chart With Record">
                 <a href="/monthlyResult?month=<%=month%>&year=<%=year%>">
