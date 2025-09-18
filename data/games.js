@@ -73,17 +73,17 @@ const games = [
       everyMinutes: 60
     }
   },
-  {
-    id: 7,
-    name: "Super Faridabad",
-    frequency: "interval-slot",   
-    resultCountPerDay: 16,
-    intervalSlot: {
-      start: "10:00",
-      end: "22:00",
-      everyMinutes: 45
-    }
-  }
+  // {
+  //   id: 7,
+  //   name: "Super Faridabad",
+  //   frequency: "interval-slot",   
+  //   resultCountPerDay: 16,
+  //   intervalSlot: {
+  //     start: "10:00",
+  //     end: "22:00",
+  //     everyMinutes: 45
+  //   }
+  // }
 ];
 
 module.exports = games;

@@ -9,6 +9,16 @@ require("dotenv").config();
 require("./dbConnection");
 app.set("view engine", "ejs");
 
+app.use((req, res, next) => {
+  const mode = parseInt(process.env.MAINTENANCE_TEMPLATE || "0", 10);
+
+  if (mode > 0) {
+    return res.render(`maintenance/template${mode}.ejs`);
+  }
+
+  next(); 
+});
+
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
